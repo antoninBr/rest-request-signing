@@ -18,7 +18,7 @@ public interface RestRequestPayloadBuilder  extends VersionnedBuilder {
      * @param restRequestPayload
      * @return the lower case HEX Value of the hashed Payload
      */
-    String buildRestRequestPayload(HashAlgorithm hashAlgorithm, String restRequestPayload) throws RestRequestPayloadBuildingException;
+    String buildRestRequestPayload(HashAlgorithm hashAlgorithm, byte[] restRequestPayload) throws RestRequestPayloadBuildingException;
 
 
 }
