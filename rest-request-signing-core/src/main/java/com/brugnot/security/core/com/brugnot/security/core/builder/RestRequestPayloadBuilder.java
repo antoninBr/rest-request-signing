@@ -1,0 +1,24 @@
+package com.brugnot.security.core.com.brugnot.security.core.builder;
+
+import com.brugnot.security.core.HashAlgorithm;
+import com.brugnot.security.core.com.brugnot.security.core.builder.versionning.VersionnedBuilder;
+import com.brugnot.security.core.exception.builder.RestRequestPayloadBuildingException;
+
+/**
+ * Rest Request Payload Builder
+ *
+ * Created by Antonin on 27/11/2016.
+ */
+public interface RestRequestPayloadBuilder  extends VersionnedBuilder {
+
+    /**
+     * Build the Rest Request Payload
+     *
+     * @param hashAlgorithm
+     * @param restRequestPayload
+     * @return the lower case HEX Value of the hashed Payload
+     */
+    String buildRestRequestPayload(HashAlgorithm hashAlgorithm, String restRequestPayload) throws RestRequestPayloadBuildingException;
+
+
+}
