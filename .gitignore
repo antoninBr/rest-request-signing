@@ -16,5 +16,5 @@ hs_err_pid*
 /.idea/
 /*/*.iml
 *.iml
-vcs.xml
+*/vcs.xml
 
