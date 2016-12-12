@@ -1,7 +1,6 @@
 package com.brugnot.security.cxf.interceptor.abs;
 
-import com.brugnot.security.core.HashAlgorithm;
-import com.brugnot.security.core.com.brugnot.security.core.builder.*;
+import com.brugnot.security.core.builder.*;
 import com.brugnot.security.core.exception.builder.RestBuilderException;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.interceptor.AbstractOutDatabindingInterceptor;

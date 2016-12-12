@@ -20,16 +20,16 @@
            <artifactId>rest-request-signing-core</artifactId>
            <version>1.0.0-SNAPSHOT</version>
        </dependency>
+       <dependency>
+           <groupId>com.brugnot.security</groupId>
+           <artifactId>rest-request-signing-commons</artifactId>
+           <version>1.0.0-SNAPSHOT</version>
+       </dependency>
 
        <!-- CXF -->
        <dependency>
            <groupId>org.apache.cxf</groupId>
            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-           <version>${cxf-version}</version>
-       </dependency>
-       <dependency>
-           <groupId>org.apache.cxf</groupId>
-           <artifactId>cxf-rt-transports-http</artifactId>
            <version>${cxf-version}</version>
        </dependency>
 
