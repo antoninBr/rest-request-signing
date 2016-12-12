@@ -12,7 +12,6 @@ import java.util.Map;
  */
 public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements RestCanonicalHeadersBuilder {
 
-
     public String buildRestCanonicalHeaders(Map<String, List<String>> headers) throws RestCanonicalHeadersBuildingException {
         return null;
     }
