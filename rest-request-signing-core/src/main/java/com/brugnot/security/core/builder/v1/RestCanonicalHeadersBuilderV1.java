@@ -1,7 +1,7 @@
-package com.brugnot.security.core.com.brugnot.security.core.builder.impl.v1;
+package com.brugnot.security.core.builder.v1;
 
-import com.brugnot.security.core.com.brugnot.security.core.builder.RestCanonicalHeadersBuilder;
-import com.brugnot.security.core.com.brugnot.security.core.builder.impl.v1.abs.AbstractBuilderV1;
+import com.brugnot.security.core.builder.RestCanonicalHeadersBuilder;
+import com.brugnot.security.core.builder.v1.abs.AbstractBuilderV1;
 import com.brugnot.security.core.exception.builder.RestCanonicalHeadersBuildingException;
 
 import java.util.List;

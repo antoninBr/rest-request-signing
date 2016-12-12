@@ -1,4 +1,4 @@
-package com.brugnot.security.core;
+package com.brugnot.security.rest.commons.hash;
 
 /**
  * Hash Algorithm to use for hashing

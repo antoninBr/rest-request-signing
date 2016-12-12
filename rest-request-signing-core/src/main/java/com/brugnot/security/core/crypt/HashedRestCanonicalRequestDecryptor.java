@@ -1,5 +1,7 @@
 package com.brugnot.security.core.crypt;
 
+import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
+import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
 import com.brugnot.security.rest.commons.user.AuthenticatedUser;
 
@@ -15,5 +17,5 @@ public interface HashedRestCanonicalRequestDecryptor {
      * @return EncryptionWrapper
      * @throws HashedRestCanonicalRequestDecryptingException
      */
-    EncryptionWrapper decryptHashedRestCanonicalRequest(AuthenticatedUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException;
+    DecryptionWrapper decryptHashedRestCanonicalRequest(AuthenticatedUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException;
 }

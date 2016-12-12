@@ -1,6 +1,6 @@
-package com.brugnot.security.core.com.brugnot.security.core.builder;
+package com.brugnot.security.core.builder;
 
-import com.brugnot.security.core.com.brugnot.security.core.builder.versionning.VersionnedBuilder;
+import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
 import com.brugnot.security.core.exception.builder.RestCanonicalURIBuildingException;
 
 import java.net.URI;

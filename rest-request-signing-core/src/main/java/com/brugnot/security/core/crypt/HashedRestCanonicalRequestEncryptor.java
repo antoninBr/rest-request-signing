@@ -1,5 +1,6 @@
 package com.brugnot.security.core.crypt;
 
+import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestEncryptingException;
 import com.brugnot.security.rest.commons.user.SigningUser;
 

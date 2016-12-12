@@ -1,6 +1,7 @@
 package com.brugnot.security.core.crypt.impl;
 
-import com.brugnot.security.core.crypt.EncryptionWrapper;
+import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
+import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestDecryptor;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestEncryptor;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
@@ -13,7 +14,6 @@ import org.apache.commons.codec.binary.Base64;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -44,6 +44,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
     public EncryptionWrapper encryptHashedRestCanonicalRequest(SigningUser user, String hashedRestCanonicalRequest) throws HashedRestCanonicalRequestEncryptingException {
 
 
+        long startTime = System.currentTimeMillis();
 
         try {
             encryptKeyCipher.init(Cipher.ENCRYPT_MODE, user.getPrivateKey());
@@ -85,10 +86,14 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
         }
 
 
-        return new EncryptionWrapper(Base64.encodeBase64String(encryptedHashedRequest), Base64.encodeBase64String(encryptedKey));
+        return new EncryptionWrapper(Base64.encodeBase64String(encryptedHashedRequest),
+                System.currentTimeMillis()-startTime,
+                Base64.encodeBase64String(encryptedKey));
     }
 
-    public EncryptionWrapper decryptHashedRestCanonicalRequest(AuthenticatedUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException {
+    public DecryptionWrapper decryptHashedRestCanonicalRequest(AuthenticatedUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException {
+
+        long startTime = System.currentTimeMillis();
 
         try {
             encryptKeyCipher.init(Cipher.DECRYPT_MODE, user.getPublicKey());
@@ -122,6 +127,6 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
             throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the crypted hashedRestCanonicalRequest",e);
         }
 
-        return new EncryptionWrapper(new String(decrypted), new String(decryptedKey));
+        return new DecryptionWrapper(new String(decrypted),System.currentTimeMillis()-startTime);
     }
 }
