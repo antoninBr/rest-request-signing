@@ -42,7 +42,7 @@ public class RestOutSigningOutInterceptor extends AbstractCxfRestOutOperation {
             headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST.getNormalizedName(), Arrays.asList(encryptionWrapper.getProcessedRequest()));
             headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_KEY.getNormalizedName(), Arrays.asList(encryptionWrapper.getEncryptKey()));
             headersToUpdate.put(RestSecurityHeadersEnum.REST_SIGNATURE_USER.getNormalizedName(),Arrays.asList(user.getUserName()));
-            headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_BUILDER_VERSION.getNormalizedName(),Arrays.asList());
+            headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_BUILDER_VERSION.getNormalizedName(),null);
         } catch (SigningUserCreationException e) {
             e.printStackTrace();
         } catch (RestBuilderException e) {
