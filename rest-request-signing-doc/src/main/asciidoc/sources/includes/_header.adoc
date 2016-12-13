@@ -1,0 +1,90 @@
+++++
+<div id="header-toc" style="display: none;">
+++++
+
+* link:index.html[Home]
+* link:domain.html[Domain]
+
+++++
+</div>
+++++
+
+//turn off table and image title numbering
+:caption:
+
+// Hacks for CSS and navigation
+++++
+<style>
+h2 {
+    background-color: #ba3925;
+    color: white !important;
+    padding: 5px;
+}
+h2 a {
+    color: white !important;
+}
+
+h3 {
+    border-bottom: 5px #ba3925 solid;
+}
+
+th {
+
+    background-color: #ba3925;
+    color: white !important;
+
+}
+
+pre {
+
+    background-color: #DDDDDD !important;
+
+}
+
+table, th, td {
+    border-color: #727272 !important;
+}
+
+table tr:nth-of-type(2n) {
+     background: none repeat scroll 0 0 #DDDDDD;
+}
+
+
+.sectlevel1 > li > a {
+
+    color: #ba3925;
+    font-weight: bold;
+
+}
+
+div#toc div.ulist ul {
+    margin: 0;
+}
+div#toc div.ulist p, div#toc div.ulist {
+    margin-bottom: 0;
+}
+
+div#toc #toctitle {
+    margin-top: 2em !important;
+}
+
+</style>
+
+<script>
+
+function funOnload() {
+
+    document.getElementById("toc").innerHTML = document.getElementById("header-toc").innerHTML + document.getElementById("toc").innerHTML;
+
+    elements = document.getElementsByTagName("h1");
+    for (key in elements) {
+        document.getElementById("toctitle").innerHTML = elements[key].innerHTML;
+        break;
+    }
+
+}
+
+window.onload = funOnload;
+
+</script>
+++++

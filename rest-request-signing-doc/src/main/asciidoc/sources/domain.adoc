@@ -1,0 +1,9 @@
+= Domain =
+
+// Header inclusion after page title
+include::includes/_header.adoc[]
+
+include::parts/domain/user_domain.adoc[]
+
+// Footer to include in every page
+include::includes/_footer.adoc[]

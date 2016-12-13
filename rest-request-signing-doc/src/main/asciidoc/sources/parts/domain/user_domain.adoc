@@ -1,0 +1,5 @@
+== User ==
+
+The User is a key concept of the rest request signing workflow.
+
+image::schemas/user.png[User Domain]

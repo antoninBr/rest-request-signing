@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>rest-request-signing-aggregator</artifactId>
+        <groupId>com.brugnot.security</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>rest-request-signing-doc</artifactId>
+
+    <properties>
+        <asciidoctor-maven-plugin.version>1.5.3</asciidoctor-maven-plugin.version>
+        <asciidoctor.version>1.5.4</asciidoctor.version>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <plantuml-maven-plugin.version>7954</plantuml-maven-plugin.version>
+        <plantuml.version>8027</plantuml.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- plant UML generator -->
+            <plugin>
+                <groupId>com.github.jeluard</groupId>
+                <artifactId>plantuml-maven-plugin</artifactId>
+                <version>${plantuml-maven-plugin.version}</version>
+                <configuration>
+                    <sourceFiles>
+                        <directory>${basedir}</directory>
+                        <includes>
+                            <include>src/main/schemas/**/*.puml</include>
+                        </includes>
+                    </sourceFiles>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.plantuml</groupId>
+                        <artifactId>plantuml</artifactId>
+                        <version>${plantuml.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>generate-png-from-plantUML</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/docs/images/schemas</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- copy resources -->
+            <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>copy-resources</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/docs/images/schemas</outputDirectory>
+                        <resources>
+                            <resource>
+                                <directory>${project.basedir}/src/main/images</directory>
+                                <filtering>false</filtering>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>copy-schemas</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.basedir}/src/main/asciidoc/sources/images/schemas</outputDirectory>
+                        <resources>
+                            <resource>
+                                <directory>${project.build.directory}/docs/images/schemas</directory>
+                                <filtering>false</filtering>
+                            </resource>
+                            <resource>
+                                <directory>${project.basedir}/src/main/images</directory>
+                                <filtering>false</filtering>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+            </executions>
+            </plugin>
+
+            <!-- asciidoctor generation -->
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${asciidoctor-maven-plugin.version}</version>
+
+                <dependencies> <!-- When maven plugin v1.5.4 will be available, remove this dependency -->
+                    <dependency> <!-- asciidoctor-maven-plugin is not yet available in v1.5.4, but a bug exists in asciidocJ 1.5.3, this dependecy force the maven plugin to use asciidocJ v1.5.4 -->
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj</artifactId>
+                        <version>${asciidoctor.version}</version>
+                    </dependency>
+                </dependencies>
+
+                <executions>
+                    <execution>
+                        <id>output-html</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+
+                    <!-- available are : coderay, highlightjs -->
+                    <sourceHighlighter>coderay</sourceHighlighter>
+
+
+                    <outputDirectory>target/docs</outputDirectory>
+                    <backend>html5</backend>
+                    <embedAssets>true</embedAssets>
+                    <attributes>
+                        <imagesdir>./images</imagesdir>
+                        <toc>left</toc>
+                        <icons>font</icons>
+                        <sectanchors>true</sectanchors>
+                        <idprefix />
+                        <idseparator>-</idseparator>
+
+                        <toc>left</toc>
+                        <toclevels>5</toclevels>
+                        <numbered />
+                        <revnumber>${project.version} - OpenSource</revnumber>
+                        <author>Antonin Brugnot</author>
+                        <email>antonin.brugnot@laposte.net</email>
+                        <revdate>${timestamp}</revdate>
+                        <authorinitials>Unk</authorinitials>
+                    </attributes>
+
+                    <headerFooter>true</headerFooter>
+                    <sourceDirectory>src/main/asciidoc/sources</sourceDirectory>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

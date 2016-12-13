@@ -1,0 +1,13 @@
+/////////////////////////////////////////
+// Page d'accueil de la documentation  //
+/////////////////////////////////////////
+
+= Rest Request Signing Documentation =
+
+// Header to include in every page after title
+include::includes/_header.adoc[]
+
+link:domain.html[Domain]
+
+// Footer to include in every page
+include::includes/_footer.adoc[]
