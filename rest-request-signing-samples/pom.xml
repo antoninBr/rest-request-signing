@@ -13,6 +13,7 @@
     <modules>
         <module>rest-request-signing-samples-commons</module>
         <module>rest-request-signing-cxf-server-sample</module>
+        <module>rest-request-signing-cxf-client-sample</module>
     </modules>
 
 
