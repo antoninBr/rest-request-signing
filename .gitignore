@@ -19,3 +19,5 @@ hs_err_pid*
 */vcs.xml
 
 */target/**
+
+/rest-request-signing-doc/src/main/asciidoc/sources/images/
