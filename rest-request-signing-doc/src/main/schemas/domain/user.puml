@@ -1,6 +1,49 @@
 @startuml
-class User <<abstract>>{
-  # String userName
-  + String getUserName();
+class User <<interface>>{
+
+getUserName() : String
 }
+
+class KeyStoreUser <<interface>> extends User{
+getKeyAlias() : String
+getKeyPassword() : String
+}
+
+class SigningUser <<interface>> extends User{
+getPrivateKey() : PrivateKey
+}
+
+class AuthenticatedUser <<interface>> extends User{
+getPublicKey() : PublicKey
+getEncryptedRequestKey() : String
+}
+
+class AuthenticatedUserWithRoles <<interfaces>> extends AuthenticatedUser{
+getRoles() : Set<Role>
+}
+
+class AbstractUser <<abstract>> implements User{
+- userName : String
++ getUserName : String
+}
+
+class KeyStoreUserImpl extends AbstractUser implements KeyStoreUser{
+- keyAlias : String
+- keyPassword : String
++ getKeyAlias : String
++ getKeyPassword : String
+}
+
+class SigningUserImpl extends AbstractUser implements SigningUser{
+- privateKey : PrivateKey
++ getPrivateKey : PrivateKey
+}
+
+class AuthenticatedUserImpl extends AbstractUser implements AuthenticatedUser{
+- publicKey : PublicKey
+- encryptedRequestKey : String
++ getPublicKey : PublicKey
++ getEncryptedRequestKey : String
+}
+
 @enduml
