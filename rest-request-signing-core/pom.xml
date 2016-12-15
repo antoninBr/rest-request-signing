@@ -7,7 +7,7 @@
     <groupId>com.brugnot.security</groupId>
     <artifactId>rest-request-signing-core</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
          
     <dependencies>
         <dependency>
