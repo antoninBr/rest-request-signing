@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import java.security.KeyStoreException;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
-import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 /**

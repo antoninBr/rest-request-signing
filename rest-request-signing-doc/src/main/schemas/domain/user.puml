@@ -18,7 +18,7 @@ getPublicKey() : PublicKey
 getEncryptedRequestKey() : String
 }
 
-class AuthenticatedUser <<interface>> extends CandidateUser{
+class AuthenticatedUser <<interface>> extends User{
 getUserAuthenticationDate() : Date
 }
 
@@ -50,7 +50,7 @@ class CandidateUserImpl extends AbstractUser implements CandidateUser{
 + getEncryptedRequestKey : String
 }
 
-class AuthenticatedUserImpl extends CandidateUserImpl implements AuthenticatedUser{
+class AuthenticatedUserImpl extends AbstractUser implements AuthenticatedUser{
 - userAuthenticationDate : Date
 + getUserAuthenticationDate : Date
 }

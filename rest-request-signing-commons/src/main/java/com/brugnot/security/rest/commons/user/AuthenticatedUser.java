@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Antonin on 17/01/2017.
  */
-public interface AuthenticatedUser extends CandidateUser{
+public interface AuthenticatedUser extends User{
 
     /**
      * Get this User Authentication Date
