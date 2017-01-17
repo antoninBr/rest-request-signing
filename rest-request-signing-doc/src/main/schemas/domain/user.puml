@@ -13,13 +13,17 @@ class SigningUser <<interface>> extends User{
 getPrivateKey() : PrivateKey
 }
 
-class AuthenticatedUser <<interface>> extends User{
+class CandidateUser <<interface>> extends User{
 getPublicKey() : PublicKey
 getEncryptedRequestKey() : String
 }
 
+class AuthenticatedUser <<interface>> extends CandidateUser{
+getUserAuthenticationDate() : Date
+}
+
 class AuthenticatedUserWithRoles <<interfaces>> extends AuthenticatedUser{
-getRoles() : Set<Role>
+hasRole(role : Role)
 }
 
 class AbstractUser <<abstract>> implements User{
@@ -39,11 +43,21 @@ class SigningUserImpl extends AbstractUser implements SigningUser{
 + getPrivateKey : PrivateKey
 }
 
-class AuthenticatedUserImpl extends AbstractUser implements AuthenticatedUser{
+class CandidateUserImpl extends AbstractUser implements CandidateUser{
 - publicKey : PublicKey
 - encryptedRequestKey : String
 + getPublicKey : PublicKey
 + getEncryptedRequestKey : String
+}
+
+class AuthenticatedUserImpl extends CandidateUserImpl implements AuthenticatedUser{
+- userAuthenticationDate : Date
++ getUserAuthenticationDate : Date
+}
+
+class AuthenticatedUserWithRolesImpl extends AuthenticatedUserImpl implements AuthenticatedUserWithRoles{
+- roles : Set<Role>
++ hasRole(role : Role) : boolean
 }
 
 @enduml
