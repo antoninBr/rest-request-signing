@@ -2,6 +2,8 @@ package com.brugnot.security.cxf.interceptor.abs;
 
 import com.brugnot.security.core.builder.*;
 import com.brugnot.security.core.exception.builder.RestBuilderException;
+import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
+import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.interceptor.AbstractOutDatabindingInterceptor;
 import org.apache.cxf.interceptor.Fault;
@@ -30,6 +32,8 @@ import java.util.Set;
  */
 public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabindingInterceptor {
 
+    public static final String BODY_INDEX = "BODY_INDEX";
+
     private RestCanonicalRequestBuilder restCanonicalRequestBuilder;
 
     private RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder;
@@ -42,20 +46,24 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
 
     private RestSignedHeadersBuilder restSignedHeadersBuilder;
 
+    protected HashAlgorithm requestHashAlgorithm;
+
+    protected HashAlgorithm payloadHashAlgorithm;
+
     public AbstractCxfRestOutOperation() {
         super(Phase.POST_LOGICAL);
     }
 
-    protected String buildRestRequestFromMessage(Message message) throws RestBuilderException{
+    protected String buildRestRequestFromMessage(Message message) throws RestBuilderException, RequestPayloadExtractionException {
 
             return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
-                    null,
+                    requestHashAlgorithm,
                     message.get(Message.HTTP_REQUEST_METHOD).toString(),
-                    restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(null),
+                    restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(message.get(Message.QUERY_STRING).toString()),
                     restCanonicalURIBuilder.buildRestCanonicalURI(message.get(Message.REQUEST_URI).toString()).toString(),
                     restCanonicalHeadersBuilder.buildRestCanonicalHeaders((Map<String, List<String>>) message.get(Message.PROTOCOL_HEADERS)),
                     restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage(message)),
-                    restRequestPayloadBuilder.buildRestRequestPayload(null, getPayloadDataFromMessage(message)));
+                    restRequestPayloadBuilder.buildRestRequestPayload(payloadHashAlgorithm, getPayloadDataFromMessage(message)));
 
 
     }
@@ -64,7 +72,7 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
         return null;
     }
     
-    private byte[] getPayloadDataFromMessage(Message message){
+    private byte[] getPayloadDataFromMessage(Message message) throws RequestPayloadExtractionException {
 
         byte[] payloadData = null;
 
@@ -80,36 +88,30 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
                     .get(Message.PROTOCOL_HEADERS);
             
             Method method = ori.getMethodToInvoke();
-            int bodyIndex = (Integer) message.get("BODY_INDEX");
+            int bodyIndex = (Integer) message.get(BODY_INDEX);
             Method aMethod = ori.getAnnotatedMethod();
             Annotation[] anns = aMethod == null || bodyIndex == -1 ? new Annotation[0]
                     : aMethod.getParameterAnnotations()[bodyIndex];
             Object body = objs.get(0);
-            try {
-                if (bodyIndex != -1) {
-                    Class<?> paramClass = method.getParameterTypes()[bodyIndex];
-                    Type paramType = method.getGenericParameterTypes()[bodyIndex];
+            if (bodyIndex != -1) {
+                Class<?> paramClass = method.getParameterTypes()[bodyIndex];
+                Type paramType = method.getGenericParameterTypes()[bodyIndex];
 
-                    boolean isAssignable = paramClass.isAssignableFrom(body
-                            .getClass());
-                    writeBody(body, message, isAssignable ? paramClass
-                                    : body.getClass(),
-                            isAssignable ? paramType : body.getClass(), anns,
-                            headers, os);
-                } else {
-                    writeBody(body, message, body.getClass(),
-                            body.getClass(), anns, headers, os);
-                }
-            } catch (Exception ex) {
-                throw new Fault(ex);
+                boolean isAssignable = paramClass.isAssignableFrom(body
+                        .getClass());
+                writeBody(body, message, isAssignable ? paramClass
+                                : body.getClass(),
+                        isAssignable ? paramType : body.getClass(), anns,
+                        headers, os);
+            } else {
+                writeBody(body, message, body.getClass(),
+                        body.getClass(), anns, headers, os);
             }
 
-
-            
             try {
                 payloadData = IOUtils.readBytesFromStream(os.getInputStream());
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RequestPayloadExtractionException("Error while Reading the Data from the Request Payload OutputStream",e);
             }
 
         }
@@ -119,7 +121,7 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
 
     private void writeBody(Object o, Message outMessage, Class<?> cls,
                            Type type, Annotation[] anns,
-                           MultivaluedMap<String, Object> headers, OutputStream os) {
+                           MultivaluedMap<String, Object> headers, OutputStream os) throws RequestPayloadExtractionException {
         if (o == null) {
             return;
         }
@@ -137,14 +139,45 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
                 if (os != null) {
                     os.flush();
                 }
-            } catch (Exception ex) {
-                throw new RuntimeException(
-                        "Error, could not write body to output stream");
+            } catch (Exception e) {
+                throw new RequestPayloadExtractionException(
+                        "Error, could not write payload body to output stream",e);
             }
         } else {
-            throw new RuntimeException("Error, message body writer is null");
+            throw new RequestPayloadExtractionException("Error, message body writer is null, could not extract the payload");
         }
 
     }
 
+    public void setRestCanonicalRequestBuilder(RestCanonicalRequestBuilder restCanonicalRequestBuilder) {
+        this.restCanonicalRequestBuilder = restCanonicalRequestBuilder;
+    }
+
+    public void setRestCanonicalQueryStringBuilder(RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder) {
+        this.restCanonicalQueryStringBuilder = restCanonicalQueryStringBuilder;
+    }
+
+    public void setRestCanonicalURIBuilder(RestCanonicalURIBuilder restCanonicalURIBuilder) {
+        this.restCanonicalURIBuilder = restCanonicalURIBuilder;
+    }
+
+    public void setRestCanonicalHeadersBuilder(RestCanonicalHeadersBuilder restCanonicalHeadersBuilder) {
+        this.restCanonicalHeadersBuilder = restCanonicalHeadersBuilder;
+    }
+
+    public void setRestRequestPayloadBuilder(RestRequestPayloadBuilder restRequestPayloadBuilder) {
+        this.restRequestPayloadBuilder = restRequestPayloadBuilder;
+    }
+
+    public void setRestSignedHeadersBuilder(RestSignedHeadersBuilder restSignedHeadersBuilder) {
+        this.restSignedHeadersBuilder = restSignedHeadersBuilder;
+    }
+
+    public void setRequestHashAlgorithm(HashAlgorithm requestHashAlgorithm) {
+        this.requestHashAlgorithm = requestHashAlgorithm;
+    }
+
+    public void setPayloadHashAlgorithm(HashAlgorithm payloadHashAlgorithm) {
+        this.payloadHashAlgorithm = payloadHashAlgorithm;
+    }
 }

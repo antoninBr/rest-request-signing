@@ -17,4 +17,15 @@ public enum NormalizedHashAlgorithm implements HashAlgorithm {
     public String getHashAlgorithm() {
         return this.hashAlgorithm;
     }
+
+    public static HashAlgorithm createNormalizedHashAlgorithm(String hashAlgorithmAsString){
+
+        for(NormalizedHashAlgorithm normalizedHashAlgorithm : values()){
+            if(normalizedHashAlgorithm.getHashAlgorithm().equals(hashAlgorithmAsString)){
+                return normalizedHashAlgorithm;
+            }
+        }
+
+        return SHA_256;
+    }
 }

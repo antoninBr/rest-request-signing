@@ -1,21 +1,7 @@
 package com.brugnot.security.rest.commons.user;
 
-import java.security.PublicKey;
-
 /**
- * Created by Antonin on 03/12/2016.
+ * Created by Antonin on 17/01/2017.
  */
-public interface AuthenticatedUser extends User {
-
-    /**
-     * Authenticated user Public Key
-     * @return publicKey
-     */
-    PublicKey getPublicKey();
-
-    /**
-     * Get the encrypted Request Decrypting Key
-     */
-    String getEncryptedRequestKey();
-
+public interface AuthenticatedUser extends CandidateUser{
 }

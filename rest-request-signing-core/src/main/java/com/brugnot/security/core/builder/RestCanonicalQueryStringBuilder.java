@@ -18,5 +18,5 @@ public interface RestCanonicalQueryStringBuilder extends VersionnedBuilder{
      * @return rest canonical query string
      * @throws RestCanonicalQueryStringBuildingException
      */
-    String buildRestCanonicalQueryString(Map<String,String> queryParameters) throws RestCanonicalQueryStringBuildingException;
+    String buildRestCanonicalQueryString(String queryParameters) throws RestCanonicalQueryStringBuildingException;
 }

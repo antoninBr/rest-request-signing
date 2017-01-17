@@ -13,25 +13,38 @@ import java.util.TreeMap;
  */
 public class RestCanonicalQueryStringBuilderV1 extends AbstractBuilderV1 implements RestCanonicalQueryStringBuilder {
 
-    public String buildRestCanonicalQueryString(Map<String, String> queryParameters) throws RestCanonicalQueryStringBuildingException {
+    public String buildRestCanonicalQueryString(String queryParametersString) throws RestCanonicalQueryStringBuildingException {
+
+        Map<String,String> queryParameters = getQueryParametersMapFromString(queryParametersString);
 
         StringBuilder canonicalQuery = new StringBuilder();
 
-        Map<String,String> orderedQueryParams = new TreeMap();
-
-        if(queryParameters==null) queryParameters = new HashMap<String, String>();
-
-        for(Map.Entry<String,String> unorderedQueryParamEntry : queryParameters.entrySet()){
-
-            orderedQueryParams.put(unorderedQueryParamEntry.getKey(),unorderedQueryParamEntry.getValue());
-
-        }
-
-        for(Map.Entry<String,String> orderedQueryParamEntry : orderedQueryParams.entrySet()){
+        for(Map.Entry<String,String> orderedQueryParamEntry : queryParameters.entrySet()){
             canonicalQuery.append(orderedQueryParamEntry.getKey());
             canonicalQuery.append(orderedQueryParamEntry.getValue());
         }
 
         return canonicalQuery.toString();
+    }
+
+    private Map<String, String> getQueryParametersMapFromString(String queryParametersString) {
+
+        Map<String,String> orderedQueryParams = new TreeMap();
+
+        if(queryParametersString!=null){
+
+            for(String keyValue : queryParametersString.split("&")){
+
+               if(keyValue.length()==0){
+                   continue;
+               }else{
+                   String[] fields = keyValue.split("=");
+                   orderedQueryParams.put(fields[0],fields[1]);
+               }
+
+            }
+        }
+
+        return orderedQueryParams;
     }
 }

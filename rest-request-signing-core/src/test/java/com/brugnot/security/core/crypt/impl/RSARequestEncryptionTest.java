@@ -1,10 +1,5 @@
 package com.brugnot.security.core.crypt.impl;
 
-import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
-import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
-import com.brugnot.security.core.user.impl.AuthenticatedUserImpl;
-import com.brugnot.security.core.user.impl.GeneratedSigningUser;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -25,7 +20,7 @@ public class RSARequestEncryptionTest {
 
         EncryptionWrapper encryptionWrapper = rsaRequestEncryption.encryptHashedRestCanonicalRequest(signingUser,hashedRequest);
 
-        AuthenticatedUserImpl authenticatedUser = new AuthenticatedUserImpl("test",signingUser.getPublicKey(),encryptionWrapper.getEncryptKey());
+        CandidateUserImpl authenticatedUser = new CandidateUserImpl("test",signingUser.getPublicKey(),encryptionWrapper.getEncryptKey());
 
         DecryptionWrapper result = rsaRequestEncryption.decryptHashedRestCanonicalRequest(authenticatedUser,encryptionWrapper.getProcessedRequest());
 

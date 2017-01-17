@@ -7,6 +7,7 @@ import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestEncry
 import com.brugnot.security.core.exception.user.SigningUserCreationException;
 import com.brugnot.security.core.user.SigningUserCreator;
 import com.brugnot.security.cxf.interceptor.abs.AbstractCxfRestOutOperation;
+import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.rest.commons.header.RestSecurityHeadersEnum;
 import com.brugnot.security.rest.commons.user.SigningUser;
 import com.brugnot.security.rest.commons.user.User;
@@ -20,7 +21,7 @@ import java.util.Map;
 /**
  * Created by Antonin on 04/12/2016.
  */
-public class RestOutSigningOutInterceptor extends AbstractCxfRestOutOperation {
+public final class RestSigningOutInterceptor extends AbstractCxfRestOutOperation {
 
     private User user;
 
@@ -43,14 +44,30 @@ public class RestOutSigningOutInterceptor extends AbstractCxfRestOutOperation {
             headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_KEY.getNormalizedName(), Arrays.asList(encryptionWrapper.getEncryptKey()));
             headersToUpdate.put(RestSecurityHeadersEnum.REST_SIGNATURE_USER.getNormalizedName(),Arrays.asList(user.getUserName()));
             headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_BUILDER_VERSION.getNormalizedName(),null);
+            headersToUpdate.put(RestSecurityHeadersEnum.REST_PAYLOAD_HASH_ALGORITHM.getNormalizedName(), Arrays.asList(payloadHashAlgorithm.getHashAlgorithm()));
+            headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_HASH_ALGORITHM.getNormalizedName(), Arrays.asList(requestHashAlgorithm.getHashAlgorithm()));
+
         } catch (SigningUserCreationException e) {
             e.printStackTrace();
         } catch (RestBuilderException e) {
             e.printStackTrace();
         } catch (HashedRestCanonicalRequestEncryptingException e) {
             e.printStackTrace();
+        } catch (RequestPayloadExtractionException e) {
+            e.printStackTrace();
         }
 
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setHashedRestCanonicalRequestEncryptor(HashedRestCanonicalRequestEncryptor hashedRestCanonicalRequestEncryptor) {
+        this.hashedRestCanonicalRequestEncryptor = hashedRestCanonicalRequestEncryptor;
+    }
+
+    public void setSigningUserCreator(SigningUserCreator signingUserCreator) {
+        this.signingUserCreator = signingUserCreator;
     }
 }

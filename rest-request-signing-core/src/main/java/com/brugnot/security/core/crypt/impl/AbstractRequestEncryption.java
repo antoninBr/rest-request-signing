@@ -7,7 +7,7 @@ import com.brugnot.security.core.crypt.HashedRestCanonicalRequestEncryptor;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestEncryptingException;
 import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
-import com.brugnot.security.rest.commons.user.AuthenticatedUser;
+import com.brugnot.security.rest.commons.user.CandidateUser;
 import com.brugnot.security.rest.commons.user.SigningUser;
 import org.apache.commons.codec.binary.Base64;
 
@@ -91,7 +91,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
                 Base64.encodeBase64String(encryptedKey));
     }
 
-    public DecryptionWrapper decryptHashedRestCanonicalRequest(AuthenticatedUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException {
+    public DecryptionWrapper decryptHashedRestCanonicalRequest(CandidateUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException {
 
         long startTime = System.currentTimeMillis();
 

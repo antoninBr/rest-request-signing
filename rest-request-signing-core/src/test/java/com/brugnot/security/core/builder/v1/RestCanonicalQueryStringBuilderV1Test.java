@@ -25,13 +25,7 @@ public class RestCanonicalQueryStringBuilderV1Test {
     @Test
     public void buildRestCanonicalQueryString() throws Exception {
 
-        Map<String,String> queryParams = new HashMap<String,String>();
-
-        queryParams.put("a","1");
-        queryParams.put("c","3");
-        queryParams.put("b","2");
-
-        String canonicalQueryString = restCanonicalQueryStringBuilderV1.buildRestCanonicalQueryString(queryParams);
+        String canonicalQueryString = restCanonicalQueryStringBuilderV1.buildRestCanonicalQueryString("&a=1&c=3&b=2");
 
         Assert.assertNotNull(canonicalQueryString);
         Assert.assertEquals("a1b2c3",canonicalQueryString);
@@ -42,9 +36,7 @@ public class RestCanonicalQueryStringBuilderV1Test {
     @Test
     public void buildRestCanonicalQueryStringWithNoParams() throws Exception {
 
-        Map<String,String> queryParams = new HashMap<String,String>();
-
-        String canonicalQueryString = restCanonicalQueryStringBuilderV1.buildRestCanonicalQueryString(queryParams);
+        String canonicalQueryString = restCanonicalQueryStringBuilderV1.buildRestCanonicalQueryString("");
 
         Assert.assertNotNull(canonicalQueryString);
         Assert.assertEquals("",canonicalQueryString);
