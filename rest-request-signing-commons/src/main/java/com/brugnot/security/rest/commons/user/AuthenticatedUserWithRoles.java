@@ -10,8 +10,8 @@ import java.util.Set;
 public interface AuthenticatedUserWithRoles extends AuthenticatedUser {
 
     /**
-     * Get the Authenticated user Roles
+     * Is the Authenticated has the specified Role
      * @return user Roles
      */
-    Set<Role> getRoles();
+    boolean hasRole(Role role);
 }
