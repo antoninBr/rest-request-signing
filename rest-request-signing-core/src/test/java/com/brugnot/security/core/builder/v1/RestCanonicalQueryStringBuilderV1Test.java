@@ -4,15 +4,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
+ * Test of Implementation of the Rest Canonical Query String Builder (V1)
  * Created by Antonin on 12/12/2016.
  */
 public class RestCanonicalQueryStringBuilderV1Test {
 
+    /**
+     * The Rest Canonical Query String Builder (V1) to Test
+     */
     private RestCanonicalQueryStringBuilderV1 restCanonicalQueryStringBuilderV1;
 
     @Before

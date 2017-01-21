@@ -3,7 +3,6 @@ package com.brugnot.security.cxf.interceptor.abs;
 import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import org.apache.cxf.helpers.IOUtils;
-import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.io.CachedOutputStream;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;

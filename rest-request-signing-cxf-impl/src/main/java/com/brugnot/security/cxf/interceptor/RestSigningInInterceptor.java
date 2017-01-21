@@ -16,6 +16,7 @@ import com.brugnot.security.rest.commons.user.CandidateUser;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
@@ -80,5 +81,25 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
         }else{
             return securityHeaderValues.get(0);
         }
+    }
+
+    @Inject
+    public void setCandidateUserCreator(CandidateUserCreator candidateUserCreator) {
+        this.candidateUserCreator = candidateUserCreator;
+    }
+
+    @Inject
+    public void setHashedRestCanonicalRequestDecryptor(HashedRestCanonicalRequestDecryptor hashedRestCanonicalRequestDecryptor) {
+        this.hashedRestCanonicalRequestDecryptor = hashedRestCanonicalRequestDecryptor;
+    }
+
+    @Inject
+    public void setAuthenticatedUserCreator(AuthenticatedUserCreator authenticatedUserCreator) {
+        this.authenticatedUserCreator = authenticatedUserCreator;
+    }
+
+    @Inject
+    public void setHolder(AuthenticatedUserHolder holder) {
+        this.holder = holder;
     }
 }

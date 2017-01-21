@@ -10,14 +10,14 @@ import javax.inject.Inject;
 import java.security.KeyStoreException;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
-import java.util.concurrent.ConcurrentMap;
+import java.util.List;
 
 /**
  * Created by Antonin on 03/12/2016.
  */
 public class TrustStoreCandidateUserCreatorImpl extends AbstractKeystoreUserOperation implements CandidateUserCreator {
 
-    private ConcurrentMap<String,KeystoreUser> users;
+    private List<KeystoreUser> users;
 
     public CandidateUser createCandidateUser(String candidateName, String encryptedRequestKey) throws UserAuthenticationException {
 
@@ -37,16 +37,18 @@ public class TrustStoreCandidateUserCreatorImpl extends AbstractKeystoreUserOper
 
     private KeystoreUser getUserFromCandidateName(String candidateName) throws UserAuthenticationException {
 
-        if(!users.containsKey(candidateName)){
-            throw new UserAuthenticationException("Unknown User Name : '"+candidateName+"'");
+        for(KeystoreUser user : users){
+                if(user.getUserName().equals(candidateName)){
+                    return user;
+                }
         }
 
-        return users.get(candidateName);
+        throw new UserAuthenticationException("Unknown User Name : '"+candidateName+"'");
 
     }
 
     @Inject
-    public void setUsers(ConcurrentMap<String, KeystoreUser> users) {
+    public void setUsers(List<KeystoreUser> users) {
         this.users = users;
     }
 }

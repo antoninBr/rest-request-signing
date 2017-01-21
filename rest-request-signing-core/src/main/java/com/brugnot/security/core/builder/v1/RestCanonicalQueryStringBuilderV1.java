@@ -4,7 +4,6 @@ import com.brugnot.security.core.builder.RestCanonicalQueryStringBuilder;
 import com.brugnot.security.core.builder.v1.abs.AbstractBuilderV1;
 import com.brugnot.security.core.exception.builder.RestCanonicalQueryStringBuildingException;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,6 +11,12 @@ import java.util.TreeMap;
  * Created by Antonin on 12/12/2016.
  */
 public class RestCanonicalQueryStringBuilderV1 extends AbstractBuilderV1 implements RestCanonicalQueryStringBuilder {
+
+    /**
+     * Query Parameters Constants
+     */
+    private static final String QUERY_PARAMS_SEPARATOR = "&";
+    private static final String KEY_VALUE_SEPARATOR = "=";
 
     public String buildRestCanonicalQueryString(String queryParametersString) throws RestCanonicalQueryStringBuildingException {
 
@@ -33,12 +38,12 @@ public class RestCanonicalQueryStringBuilderV1 extends AbstractBuilderV1 impleme
 
         if(queryParametersString!=null){
 
-            for(String keyValue : queryParametersString.split("&")){
+            for(String keyValue : queryParametersString.split(QUERY_PARAMS_SEPARATOR)){
 
                if(keyValue.length()==0){
                    continue;
                }else{
-                   String[] fields = keyValue.split("=");
+                   String[] fields = keyValue.split(KEY_VALUE_SEPARATOR);
                    orderedQueryParams.put(fields[0],fields[1]);
                }
 

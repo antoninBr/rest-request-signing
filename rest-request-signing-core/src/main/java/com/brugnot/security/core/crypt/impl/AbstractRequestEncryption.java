@@ -1,9 +1,9 @@
 package com.brugnot.security.core.crypt.impl;
 
-import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
-import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestDecryptor;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestEncryptor;
+import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
+import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestEncryptingException;
 import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
@@ -26,13 +26,10 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
 
     private Cipher requestCipher;
 
-    private String requestCipherAlgorithm;
-
     public AbstractRequestEncryption(String encryptKeyCipherAlgorithm, String requestCipherAlgorithm) throws RequestEncryptionException {
         try {
             this.encryptKeyCipher = Cipher.getInstance(encryptKeyCipherAlgorithm);
             this.requestCipher = Cipher.getInstance(requestCipherAlgorithm);
-            this.requestCipherAlgorithm = requestCipherAlgorithm;
         }catch(NoSuchAlgorithmException e){
             throw new RequestEncryptionException("Error while instantiating the request encryption components",e);
         }catch(NoSuchPaddingException e){

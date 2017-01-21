@@ -13,9 +13,7 @@ public class RestCanonicalRequestBuilderV1 extends AbstractBuilderV1 implements 
 
     public String buildRestCanonicalRequest(String httpRequestMethod, String canonicalURI, String canonicalQueryString, String canonicalHeaders, String signedHeaders, String requestPayload) throws RestCanonicalRequestBuildingException {
 
-        String restCanonicalRequest = buildCanonicalEntity(httpRequestMethod,canonicalURI,canonicalQueryString,canonicalHeaders,signedHeaders,requestPayload);
-
-        return restCanonicalRequest;
+        return buildCanonicalEntity(httpRequestMethod,canonicalURI,canonicalQueryString,canonicalHeaders,signedHeaders,requestPayload);
     }
 
     public String buildHashedRestCanonicalRequest(HashAlgorithm hashAlgorithm, String httpRequestMethod, String canonicalURI, String canonicalQueryString, String canonicalHeaders, String signedHeaders, String requestPayload) throws RestCanonicalRequestBuildingException {

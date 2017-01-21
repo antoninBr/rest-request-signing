@@ -3,8 +3,6 @@ package com.brugnot.security.core.builder;
 import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
 import com.brugnot.security.core.exception.builder.RestCanonicalQueryStringBuildingException;
 
-import java.util.Map;
-
 /**
  * Rest Canonical Query String Builder
  *

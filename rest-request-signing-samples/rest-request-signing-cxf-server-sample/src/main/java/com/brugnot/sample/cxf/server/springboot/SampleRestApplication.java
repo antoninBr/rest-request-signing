@@ -1,5 +1,16 @@
 package com.brugnot.sample.cxf.server.springboot;
 
+import com.brugnot.security.core.crypt.HashedRestCanonicalRequestDecryptor;
+import com.brugnot.security.core.crypt.impl.RSARequestEncryption;
+import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
+import com.brugnot.security.core.user.AuthenticatedUserCreator;
+import com.brugnot.security.core.user.AuthenticatedUserCreatorImpl;
+import com.brugnot.security.core.user.CandidateUserCreator;
+import com.brugnot.security.core.user.impl.KeystoreLoader;
+import com.brugnot.security.core.user.impl.KeystoreUserImpl;
+import com.brugnot.security.core.user.impl.TrustStoreCandidateUserCreatorImpl;
+import com.brugnot.security.cxf.interceptor.RestSigningInInterceptor;
+import com.brugnot.security.rest.commons.user.KeystoreUser;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
@@ -68,4 +79,45 @@ public class SampleRestApplication {
             return null;
         }
     }
+
+    @Bean
+    public RestSigningInInterceptor restSigningInInterceptor() {
+        return new RestSigningInInterceptor();
+    }
+
+    @Bean
+    public CandidateUserCreator candidateUserCreator() {
+        return new TrustStoreCandidateUserCreatorImpl();
+    }
+
+    @Bean
+    public KeystoreLoader keystoreLoader(){
+
+        return new KeystoreLoader(
+                this.getClass()
+                        .getClassLoader()
+                        .getResourceAsStream("truststore.jks"),
+                "JKS",
+                "pwd");
+    }
+
+    @Bean
+    public List<KeystoreUser> users(){
+        KeystoreUser keystoreUser = new KeystoreUserImpl("anto",
+                "rrs4j_sample",
+                null);
+        return Arrays.asList(keystoreUser);
+    }
+
+    @Bean
+    public HashedRestCanonicalRequestDecryptor hashedRestCanonicalRequestDecryptor() throws RequestEncryptionException {
+        return new RSARequestEncryption();
+    }
+
+    @Bean
+    public AuthenticatedUserCreator authenticatedUserCreator() {
+        return new AuthenticatedUserCreatorImpl();
+    }
+
+
 }

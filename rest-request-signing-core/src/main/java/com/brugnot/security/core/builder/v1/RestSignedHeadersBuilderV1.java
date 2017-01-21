@@ -12,6 +12,6 @@ import java.util.Set;
 public class RestSignedHeadersBuilderV1 extends AbstractBuilderV1 implements RestSignedHeadersBuilder {
 
     public String buildRestSignedHeaders(Set<String> restHeaders) throws RestSignedHeadersBuildingException {
-        return null;
+        return "";
     }
 }

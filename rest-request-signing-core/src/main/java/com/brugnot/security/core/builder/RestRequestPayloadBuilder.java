@@ -1,8 +1,8 @@
 package com.brugnot.security.core.builder;
 
-import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
 import com.brugnot.security.core.exception.builder.RestRequestPayloadBuildingException;
+import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 
 /**
  * Rest Request Payload Builder

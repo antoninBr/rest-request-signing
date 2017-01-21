@@ -22,6 +22,12 @@ public class KeystoreLoader {
 
     private String password;
 
+    public KeystoreLoader(InputStream keystoreFile, String keystoreType, String password) {
+        this.keystoreFile = keystoreFile;
+        this.keystoreType = keystoreType;
+        this.password = password;
+    }
+
     @PostConstruct
     public void load(){
 
