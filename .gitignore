@@ -22,3 +22,4 @@ hs_err_pid*
 
 /rest-request-signing-doc/src/main/asciidoc/sources/images/
 /rest-request-signing-samples/rest-request-signing-cxf-server-sample/target/maven-status/
+/shippable/testresults/
