@@ -14,16 +14,19 @@ import com.brugnot.security.cxf.interceptor.RestSigningOutInterceptor;
 import com.brugnot.security.rest.commons.hash.NormalizedHashAlgorithm;
 import com.brugnot.security.rest.commons.user.User;
 import org.apache.cxf.jaxrs.client.spring.EnableJaxRsProxyClient;
+import org.perf4j.slf4j.aop.TimingAspect;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Created by A505878 on 13/12/2016.
  */
 @SpringBootApplication
 @EnableJaxRsProxyClient
+@EnableAspectJAutoProxy
 public class SpringBootClientApplication {
 
     public static void main(String[] args) {
@@ -106,6 +109,15 @@ public class SpringBootClientApplication {
     @Bean
     public RestSignedHeadersBuilder restSignedHeadersBuilder(){
         return new RestSignedHeadersBuilderV1();
+    }
+
+    /**
+     * Add Per4J Timing Aspect
+     * @return timing aspect
+     */
+    @Bean
+    public TimingAspect timingAspect(){
+        return new TimingAspect();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.brugnot.security.core.builder;
 
-import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
+import com.brugnot.security.core.builder.versionning.VersionedBuilder;
 import com.brugnot.security.core.exception.builder.RestSignedHeadersBuildingException;
 
 import java.util.Set;
@@ -10,7 +10,7 @@ import java.util.Set;
  *
  * Created by Antonin on 27/11/2016.
  */
-public interface RestSignedHeadersBuilder extends VersionnedBuilder {
+public interface RestSignedHeadersBuilder extends VersionedBuilder {
 
     /**
      * Build the Rest Signed Headers Given Provided Headers Names

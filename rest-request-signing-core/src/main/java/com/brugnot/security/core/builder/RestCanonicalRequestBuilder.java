@@ -1,6 +1,6 @@
 package com.brugnot.security.core.builder;
 
-import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
+import com.brugnot.security.core.builder.versionning.VersionedBuilder;
 import com.brugnot.security.core.exception.builder.RestCanonicalRequestBuildingException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 
@@ -9,7 +9,7 @@ import com.brugnot.security.rest.commons.hash.HashAlgorithm;
  *
  * Created by Antonin on 27/11/2016.
  */
-public interface RestCanonicalRequestBuilder  extends VersionnedBuilder{
+public interface RestCanonicalRequestBuilder  extends VersionedBuilder {
 
     /**
      * Build the Rest Canonical Request Given Provided Parameters

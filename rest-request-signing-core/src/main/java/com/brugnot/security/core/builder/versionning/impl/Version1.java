@@ -5,16 +5,16 @@ import com.brugnot.security.core.builder.versionning.BuilderVersion;
 /**
  * Created by Antonin on 03/12/2016.
  */
-public class BuilderVersionImpl implements BuilderVersion {
+public class Version1 implements BuilderVersion {
 
-    public BuilderVersionImpl() {
+    private String version;
+
+    public Version1() {
+        version = "1";
     }
 
     public String getVersion() {
-        return null;
+        return version;
     }
 
-    public String getVersionHash() {
-        return null;
-    }
 }

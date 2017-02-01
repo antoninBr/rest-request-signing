@@ -5,17 +5,21 @@ import com.brugnot.security.core.builder.v1.abs.AbstractBuilderV1;
 import com.brugnot.security.core.exception.builder.RestCanonicalRequestBuildingException;
 import com.brugnot.security.core.exception.digest.HashCreationException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
+import org.perf4j.aop.Profiled;
 
 /**
+ * Rest Canonical Request Builder (V1)
  * Created by Antonin on 12/12/2016.
  */
 public class RestCanonicalRequestBuilderV1 extends AbstractBuilderV1 implements RestCanonicalRequestBuilder{
 
+    @Profiled
     public String buildRestCanonicalRequest(String httpRequestMethod, String canonicalURI, String canonicalQueryString, String canonicalHeaders, String signedHeaders, String requestPayload) throws RestCanonicalRequestBuildingException {
 
         return buildCanonicalEntity(httpRequestMethod,canonicalURI,canonicalQueryString,canonicalHeaders,signedHeaders,requestPayload);
     }
 
+    @Profiled
     public String buildHashedRestCanonicalRequest(HashAlgorithm hashAlgorithm, String httpRequestMethod, String canonicalURI, String canonicalQueryString, String canonicalHeaders, String signedHeaders, String requestPayload) throws RestCanonicalRequestBuildingException {
 
         String restCanonicalRequest = buildRestCanonicalRequest(httpRequestMethod,canonicalURI,canonicalQueryString,canonicalHeaders,signedHeaders,requestPayload);

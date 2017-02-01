@@ -1,6 +1,6 @@
 package com.brugnot.security.core.builder;
 
-import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
+import com.brugnot.security.core.builder.versionning.VersionedBuilder;
 import com.brugnot.security.core.exception.builder.RestCanonicalHeadersBuildingException;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * Created by Antonin on 27/11/2016.
  */
-public interface RestCanonicalHeadersBuilder extends VersionnedBuilder {
+public interface RestCanonicalHeadersBuilder extends VersionedBuilder {
 
     /**
      * Build the Rest Canonical Headers Given the Provided headers

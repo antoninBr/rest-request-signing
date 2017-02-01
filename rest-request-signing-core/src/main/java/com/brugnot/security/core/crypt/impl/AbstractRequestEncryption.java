@@ -10,6 +10,7 @@ import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
 import com.brugnot.security.rest.commons.user.CandidateUser;
 import com.brugnot.security.rest.commons.user.SigningUser;
 import org.apache.commons.codec.binary.Base64;
+import org.perf4j.aop.Profiled;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -38,6 +39,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
 
     }
 
+    @Profiled
     public EncryptionWrapper encryptHashedRestCanonicalRequest(SigningUser user, String hashedRestCanonicalRequest) throws HashedRestCanonicalRequestEncryptingException {
 
 
@@ -57,7 +59,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
         }
 
         SecretKey encryptKey = keyGen.generateKey();
-        int keyLength = encryptKey.getEncoded().length;
+
         try {
             requestCipher.init(Cipher.ENCRYPT_MODE, encryptKey);
         } catch (InvalidKeyException e) {
@@ -88,6 +90,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
                 Base64.encodeBase64String(encryptedKey));
     }
 
+    @Profiled
     public DecryptionWrapper decryptHashedRestCanonicalRequest(CandidateUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException {
 
         long startTime = System.currentTimeMillis();

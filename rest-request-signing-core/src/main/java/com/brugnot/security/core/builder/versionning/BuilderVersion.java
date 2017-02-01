@@ -11,9 +11,4 @@ public interface BuilderVersion {
      */
     String getVersion();
 
-    /**
-     * Get the Hash
-     * @return hash
-     */
-    String getVersionHash();
 }

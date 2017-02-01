@@ -5,6 +5,7 @@ import com.brugnot.security.core.user.CandidateUserCreator;
 import com.brugnot.security.core.user.impl.abs.AbstractKeystoreUserOperation;
 import com.brugnot.security.rest.commons.user.CandidateUser;
 import com.brugnot.security.rest.commons.user.KeystoreUser;
+import org.perf4j.aop.Profiled;
 
 import javax.inject.Inject;
 import java.security.KeyStoreException;
@@ -19,6 +20,7 @@ public class TrustStoreCandidateUserCreatorImpl extends AbstractKeystoreUserOper
 
     private List<KeystoreUser> users;
 
+    @Profiled
     public CandidateUser createCandidateUser(String candidateName, String encryptedRequestKey) throws UserAuthenticationException {
 
         KeystoreUser user = getUserFromCandidateName(candidateName);

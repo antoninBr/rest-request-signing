@@ -5,11 +5,13 @@ import com.brugnot.security.core.crypt.impl.RSARequestEncryption;
 import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
 import com.brugnot.security.core.user.AuthenticatedUserCreator;
 import com.brugnot.security.core.user.AuthenticatedUserCreatorImpl;
+import com.brugnot.security.core.user.AuthenticatedUserHolder;
 import com.brugnot.security.core.user.CandidateUserCreator;
 import com.brugnot.security.core.user.impl.KeystoreLoader;
 import com.brugnot.security.core.user.impl.KeystoreUserImpl;
 import com.brugnot.security.core.user.impl.TrustStoreCandidateUserCreatorImpl;
 import com.brugnot.security.cxf.interceptor.RestSigningInInterceptor;
+import com.brugnot.security.rest.commons.user.AuthenticatedUser;
 import com.brugnot.security.rest.commons.user.KeystoreUser;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.endpoint.Server;
@@ -18,15 +20,13 @@ import org.apache.cxf.jaxrs.lifecycle.ResourceProvider;
 import org.apache.cxf.jaxrs.spring.SpringResourceFactory;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.perf4j.slf4j.aop.TimingAspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.*;
 
 import javax.ws.rs.Path;
 import java.util.Arrays;
@@ -39,6 +39,7 @@ import java.util.List;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+@EnableAspectJAutoProxy
 @ImportResource({"classpath:META-INF/cxf/cxf.xml", "classpath:META-INF/cxf/cxf-servlet.xml"})
 public class SampleRestApplication {
 
@@ -117,6 +118,30 @@ public class SampleRestApplication {
     @Bean
     public AuthenticatedUserCreator authenticatedUserCreator() {
         return new AuthenticatedUserCreatorImpl();
+    }
+
+    @Bean
+    public AuthenticatedUserHolder authenticatedUserHolder(){
+        return new AuthenticatedUserHolder() {
+            @Override
+            public void hold(AuthenticatedUser authenticatedUser) {
+
+            }
+
+            @Override
+            public AuthenticatedUser getAuthenticatedUser() {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Add Per4J Timing Aspect
+     * @return timing aspect
+     */
+    @Bean
+    public TimingAspect timingAspect(){
+        return new TimingAspect();
     }
 
 

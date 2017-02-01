@@ -1,6 +1,6 @@
 package com.brugnot.security.core.builder;
 
-import com.brugnot.security.core.builder.versionning.VersionnedBuilder;
+import com.brugnot.security.core.builder.versionning.VersionedBuilder;
 import com.brugnot.security.core.exception.builder.RestCanonicalURIBuildingException;
 
 import java.net.URI;
@@ -12,7 +12,7 @@ import java.net.URI;
  *
  * Created by Antonin on 27/11/2016.
  */
-public interface RestCanonicalURIBuilder  extends VersionnedBuilder {
+public interface RestCanonicalURIBuilder  extends VersionedBuilder {
 
     /**
      * Build the Rest Canonical URI Given Provided Parameters

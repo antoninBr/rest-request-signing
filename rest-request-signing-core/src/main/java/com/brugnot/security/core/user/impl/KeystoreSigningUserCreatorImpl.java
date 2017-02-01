@@ -5,6 +5,7 @@ import com.brugnot.security.core.user.SigningUserCreator;
 import com.brugnot.security.core.user.impl.abs.AbstractKeystoreUserOperation;
 import com.brugnot.security.rest.commons.user.KeystoreUser;
 import com.brugnot.security.rest.commons.user.SigningUser;
+import org.perf4j.aop.Profiled;
 
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +17,7 @@ import java.security.UnrecoverableKeyException;
  */
 public class KeystoreSigningUserCreatorImpl extends AbstractKeystoreUserOperation implements SigningUserCreator<KeystoreUser> {
 
-
+    @Profiled
     public SigningUser createSigningUser(KeystoreUser user) throws SigningUserCreationException {
 
         PrivateKey privateKey;
