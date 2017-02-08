@@ -29,4 +29,8 @@ public class AbstractUser implements User{
         return this.userName;
     }
 
+    @Override
+    public String toString() {
+        return "{userName='" + userName + '}';
+    }
 }

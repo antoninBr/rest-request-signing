@@ -22,7 +22,7 @@ public class GeneratedSigningUser extends AbstractUser implements SigningUser {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        keyGen.initialize(512);
+        keyGen.initialize(2048);
     }
 
     public PrivateKey getPrivateKey() {

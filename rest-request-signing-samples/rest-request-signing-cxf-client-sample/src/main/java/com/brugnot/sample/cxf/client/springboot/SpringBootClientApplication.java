@@ -5,7 +5,6 @@ import com.brugnot.security.core.builder.*;
 import com.brugnot.security.core.builder.v1.*;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestEncryptor;
 import com.brugnot.security.core.crypt.impl.RSARequestEncryption;
-import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
 import com.brugnot.security.core.user.SigningUserCreator;
 import com.brugnot.security.core.user.impl.KeystoreLoader;
 import com.brugnot.security.core.user.impl.KeystoreSigningUserCreatorImpl;
@@ -40,7 +39,7 @@ public class SpringBootClientApplication {
 
             @Override
             public void run(String... runArgs) throws Exception {
-                System.out.println(test.getTestResponse());
+                System.out.println(test.getTestResponseWithQueryParam("myParam"));
             }
         };
     }
@@ -70,7 +69,7 @@ public class SpringBootClientApplication {
     }
 
     @Bean
-    public HashedRestCanonicalRequestEncryptor hashedRestCanonicalRequestEncryptor() throws RequestEncryptionException {
+    public HashedRestCanonicalRequestEncryptor hashedRestCanonicalRequestEncryptor(){
         return new RSARequestEncryption();
     }
 

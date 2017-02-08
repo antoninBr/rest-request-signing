@@ -11,7 +11,8 @@ public enum LoggedItem {
     MAP(true, "getSize",false),
     LIST(true, "getSize",false),
     STRING(false, null,true),
-    BYTE_ARRAY(true,"length",false);
+    BYTE_ARRAY(true,"length",false),
+    COMPLEX_OBJECT(false,null,true);
 
 
     private boolean logSize;

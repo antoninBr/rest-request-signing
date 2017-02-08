@@ -3,7 +3,7 @@ package com.brugnot.security.core.exception.crypt;
 /**
  * Created by Antonin on 27/11/2016.
  */
-public class HashedRestCanonicalRequestEncryptingException extends RequestEncryptionException {
+public class HashedRestCanonicalRequestEncryptingException extends CryptoComponentInstantiationException {
 
     public HashedRestCanonicalRequestEncryptingException(String message) {
         super(message);

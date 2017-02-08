@@ -37,6 +37,7 @@
             <version>4.3.5.RELEASE</version>
         </dependency>
 
+        <!-- RRS4J Inner dependencies -->
         <dependency>
             <groupId>com.brugnot.security</groupId>
             <artifactId>rest-request-signing-samples-commons</artifactId>
@@ -54,6 +55,14 @@
             <artifactId>jackson-jaxrs</artifactId>
             <version>1.9.13</version>
         </dependency>
+
+        <!-- Logging Framework used for this sample -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.9</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -6,16 +6,23 @@ import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
 import com.brugnot.security.core.crypt.wrapper.EncryptionWrapper;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestEncryptingException;
-import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
+import com.brugnot.security.core.exception.crypt.CryptoComponentInstantiationException;
+import com.brugnot.security.rest.commons.logging.DebugLogType;
+import com.brugnot.security.rest.commons.logging.LoggedItem;
 import com.brugnot.security.rest.commons.user.CandidateUser;
 import com.brugnot.security.rest.commons.user.SigningUser;
 import org.apache.commons.codec.binary.Base64;
 import org.perf4j.aop.Profiled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * Created by Antonin on 27/11/2016.
@@ -23,52 +30,83 @@ import java.security.NoSuchAlgorithmException;
 public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncryptor, HashedRestCanonicalRequestDecryptor{
 
 
-    private Cipher encryptKeyCipher;
+    /**
+     * Encrypt Key Cipher Algorithm to use
+     */
+    private String encryptKeyCipherAlgorithm;
 
-    private Cipher requestCipher;
+    /**
+     * Request Cipher Algorithm to use
+     */
+    private  String requestCipherAlgorithm;
 
-    public AbstractRequestEncryption(String encryptKeyCipherAlgorithm, String requestCipherAlgorithm) throws RequestEncryptionException {
-        try {
-            this.encryptKeyCipher = Cipher.getInstance(encryptKeyCipherAlgorithm);
-            this.requestCipher = Cipher.getInstance(requestCipherAlgorithm);
-        }catch(NoSuchAlgorithmException e){
-            throw new RequestEncryptionException("Error while instantiating the request encryption components",e);
-        }catch(NoSuchPaddingException e){
-            throw new RequestEncryptionException("Error while instantiating the request encryption components",e);
-        }
+    /**
+     * Algorithm Parameters (used because we are using AES Keys)
+     */
+    private  IvParameterSpec ivspecToUse;
 
+    /**
+     * LOGGER
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRequestEncryption.class);
+
+    public AbstractRequestEncryption(String encryptKeyCipherAlgorithm, String requestCipherAlgorithm) {
+        this.encryptKeyCipherAlgorithm = encryptKeyCipherAlgorithm;
+        this.requestCipherAlgorithm = requestCipherAlgorithm;
+        byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        this.ivspecToUse = new IvParameterSpec(iv);
     }
+
+
+
 
     @Profiled
     public EncryptionWrapper encryptHashedRestCanonicalRequest(SigningUser user, String hashedRestCanonicalRequest) throws HashedRestCanonicalRequestEncryptingException {
 
 
+        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"hashed canonical request to encrypt",LoggedItem.STRING,hashedRestCanonicalRequest));
+        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"signing user",LoggedItem.COMPLEX_OBJECT,hashedRestCanonicalRequest));
+
         long startTime = System.currentTimeMillis();
+
+        Cipher encryptKeyCipher;
+        Cipher requestCipher;
+        SecretKey encryptKey;
+
+        try {
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encryptKeyCipherAlgorithm",LoggedItem.STRING,encryptKeyCipherAlgorithm));
+            encryptKeyCipher = createCipher(encryptKeyCipherAlgorithm);
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"requestCipherAlgorithm",LoggedItem.STRING,requestCipherAlgorithm));
+            requestCipher = createCipher(requestCipherAlgorithm);
+            //Create symmetrical request encryption key
+            encryptKey= generateRequestEncryptionKey("AES");
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"request encrypt Key to use",LoggedItem.STRING,Arrays.toString(encryptKey.getEncoded())));
+        } catch (CryptoComponentInstantiationException e) {
+            throw new HashedRestCanonicalRequestEncryptingException("Error while instantiating one of the crypto components",e);
+        }
+
+
+        try {
+            requestCipher.init(Cipher.ENCRYPT_MODE, encryptKey,ivspecToUse);
+        } catch (InvalidKeyException e) {
+            throw new HashedRestCanonicalRequestEncryptingException("Error while initializing the request cipher using the generated symmetrical key",e);
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new HashedRestCanonicalRequestEncryptingException("Error while initializing the request cipher using the generated algorithm parameter",e);
+        }
 
         try {
             encryptKeyCipher.init(Cipher.ENCRYPT_MODE, user.getPrivateKey());
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            throw new HashedRestCanonicalRequestEncryptingException("Error while initializing the encryptKey cipher using the user private key",e);
         }
 
-        KeyGenerator keyGen = null;
-        try {
-            keyGen = KeyGenerator.getInstance("AES");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        SecretKey encryptKey = keyGen.generateKey();
-
-        try {
-            requestCipher.init(Cipher.ENCRYPT_MODE, encryptKey);
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        }
 
         byte[] encryptedHashedRequest;
         try {
-            encryptedHashedRequest = requestCipher.doFinal(hashedRestCanonicalRequest.getBytes());
+            byte[] hashedRequestAsByteArray = hashedRestCanonicalRequest.getBytes();
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(hashedRequestAsByteArray)));
+            encryptedHashedRequest = requestCipher.doFinal(hashedRequestAsByteArray);
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(encryptedHashedRequest)));
         } catch (IllegalBlockSizeException e) {
             throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the hashedRestCanonicalRequest",e);
         } catch (BadPaddingException e) {
@@ -78,55 +116,138 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
         byte[] encryptedKey;
         try {
             encryptedKey = encryptKeyCipher.doFinal(encryptKey.getEncoded());
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted encrypt key As Byte Array",LoggedItem.STRING, Arrays.toString(encryptedKey)));
         } catch (IllegalBlockSizeException e) {
             throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the key",e);
         } catch (BadPaddingException e) {
             throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the key",e);
         }
 
+        String encryptedKeyAsBase64 = Base64.encodeBase64String(encryptedKey);
+        LOGGER.debug(createItemDebugLog(DebugLogType.OUTPUT,"encrypted Key As Base64",LoggedItem.STRING,encryptedKeyAsBase64));
 
-        return new EncryptionWrapper(Base64.encodeBase64String(encryptedHashedRequest),
+        String encryptedHashedRequestAsBase64 = Base64.encodeBase64String(encryptedHashedRequest);
+        LOGGER.debug(createItemDebugLog(DebugLogType.OUTPUT,"encrypted Hashed Request As Base64",LoggedItem.STRING,encryptedHashedRequestAsBase64));
+
+        return new EncryptionWrapper(encryptedHashedRequestAsBase64,
                 System.currentTimeMillis()-startTime,
-                Base64.encodeBase64String(encryptedKey));
+                encryptedKeyAsBase64);
     }
 
     @Profiled
     public DecryptionWrapper decryptHashedRestCanonicalRequest(CandidateUser user, String cryptedHashedRestCanonicalRequest) throws HashedRestCanonicalRequestDecryptingException {
 
+        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"hashed canonical request to decrypt",LoggedItem.STRING,cryptedHashedRestCanonicalRequest));
+        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"candidate user",LoggedItem.COMPLEX_OBJECT,user));
+
         long startTime = System.currentTimeMillis();
+
+        Cipher encryptKeyCipher;
+        Cipher requestCipher;
+
+        try {
+            encryptKeyCipher = createCipher(encryptKeyCipherAlgorithm);
+            requestCipher = createCipher(requestCipherAlgorithm);
+        } catch (CryptoComponentInstantiationException e) {
+            throw new HashedRestCanonicalRequestDecryptingException("Error while instantiating one of the crypto components",e);
+        }
 
         try {
             encryptKeyCipher.init(Cipher.DECRYPT_MODE, user.getPublicKey());
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            throw new HashedRestCanonicalRequestDecryptingException("Error while initializing the key cipher using the user public key",e);
         }
 
         byte[] decryptedKey;
         try {
             decryptedKey = encryptKeyCipher.doFinal(Base64.decodeBase64(user.getEncryptedRequestKey()));
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear encrypt key As Byte Array",LoggedItem.STRING, Arrays.toString(decryptedKey)));
         } catch (IllegalBlockSizeException e) {
             throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the Key",e);
         } catch (BadPaddingException e) {
             throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the Key",e);
         }
 
+        decryptedKey = unpadZerosToGetAesKey(decryptedKey);
+        LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear encrypt key As Byte Array with leading zero padding removed",LoggedItem.STRING, Arrays.toString(decryptedKey)));
         SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length, "AES");
 
         try {
-            requestCipher.init(Cipher.DECRYPT_MODE, originalKey);
+            requestCipher.init(Cipher.DECRYPT_MODE, originalKey,ivspecToUse);
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            throw new HashedRestCanonicalRequestDecryptingException("Error while initializing the request cipher using the original decrypted key",e);
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new HashedRestCanonicalRequestDecryptingException("Error while initializing the request cipher using the generated algorithm parameter",e);
         }
 
         byte[] decrypted;
         try {
-            decrypted = requestCipher.doFinal(Base64.decodeBase64(cryptedHashedRestCanonicalRequest));
+            byte[] cryptedHashedRestCanonicalRequestAsByteArray = Base64.decodeBase64(cryptedHashedRestCanonicalRequest);
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(cryptedHashedRestCanonicalRequestAsByteArray)));
+            decrypted = requestCipher.doFinal(cryptedHashedRestCanonicalRequestAsByteArray);
+            LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(decrypted)));
         } catch (IllegalBlockSizeException e) {
-            throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the crypted hashedRestCanonicalRequest",e);
+            throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the encrypted hashedRestCanonicalRequest",e);
         } catch (BadPaddingException e) {
-            throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the crypted hashedRestCanonicalRequest",e);
+            throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the encrypted hashedRestCanonicalRequest",e);
         }
 
         return new DecryptionWrapper(new String(decrypted),System.currentTimeMillis()-startTime);
+    }
+
+    private Cipher createCipher(String cipherAlgorithm) throws CryptoComponentInstantiationException {
+        try {
+            return  Cipher.getInstance(cipherAlgorithm);
+        }catch(NoSuchAlgorithmException e){
+            throw new CryptoComponentInstantiationException("Error while instantiating the request encryption components",e);
+        }catch(NoSuchPaddingException e){
+            throw new CryptoComponentInstantiationException("Error while instantiating the request encryption components",e);
+        }
+
+    }
+
+    private SecretKey generateRequestEncryptionKey(String keyAlgorithm) throws CryptoComponentInstantiationException {
+
+        try {
+            KeyGenerator keyGen = KeyGenerator.getInstance(keyAlgorithm);
+            return keyGen.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            throw new CryptoComponentInstantiationException("Error while generating the request encryption key",e);
+        }
+
+    }
+
+    byte[] unpadZerosToGetAesKey(byte[] in) {
+        int i = 0;
+        while(in[i] == 0) i++;
+        int len = in.length - i;
+        if (len <= 16) len = 16;
+        else if (len <= 24) len = 24;
+        else len = 32;
+        return Arrays.copyOfRange(in, in.length - len, in.length);
+    }
+
+    protected String createItemDebugLog(DebugLogType debugLogType, String itemName, LoggedItem loggedItem, Object object){
+
+        StringBuilder debugLogBuilder = new StringBuilder();
+
+        debugLogBuilder.append(debugLogType.getLoggingPrefix()+"=");
+
+        debugLogBuilder.append(itemName);
+
+        if(loggedItem.isLogSize()){
+            debugLogBuilder.append(",size="+loggedItem.getObjectSize(object));
+
+        }
+
+        if(loggedItem.isLogValue()){
+
+            debugLogBuilder.append(",value="+object);
+
+        }
+
+        return debugLogBuilder.toString();
+
+
     }
 }

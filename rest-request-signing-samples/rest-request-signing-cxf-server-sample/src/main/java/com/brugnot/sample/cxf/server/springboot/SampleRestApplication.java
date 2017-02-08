@@ -2,7 +2,6 @@ package com.brugnot.sample.cxf.server.springboot;
 
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestDecryptor;
 import com.brugnot.security.core.crypt.impl.RSARequestEncryption;
-import com.brugnot.security.core.exception.crypt.RequestEncryptionException;
 import com.brugnot.security.core.user.AuthenticatedUserCreator;
 import com.brugnot.security.core.user.AuthenticatedUserCreatorImpl;
 import com.brugnot.security.core.user.AuthenticatedUserHolder;
@@ -111,7 +110,7 @@ public class SampleRestApplication {
     }
 
     @Bean
-    public HashedRestCanonicalRequestDecryptor hashedRestCanonicalRequestDecryptor() throws RequestEncryptionException {
+    public HashedRestCanonicalRequestDecryptor hashedRestCanonicalRequestDecryptor(){
         return new RSARequestEncryption();
     }
 

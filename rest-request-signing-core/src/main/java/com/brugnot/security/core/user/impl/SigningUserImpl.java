@@ -29,4 +29,6 @@ public class SigningUserImpl extends AbstractUser implements SigningUser {
     public PrivateKey getPrivateKey() {
         return privateKey;
     }
+
+
 }

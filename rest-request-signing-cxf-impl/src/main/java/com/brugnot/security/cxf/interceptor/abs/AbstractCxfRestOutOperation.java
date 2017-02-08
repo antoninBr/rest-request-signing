@@ -59,8 +59,8 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
             return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
                     requestHashAlgorithm,
                     CXFRequestComponent.METHOD.getComponentAsString(message),
-                    restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(CXFRequestComponent.QUERY.getComponentAsString(message)),
                     restCanonicalURIBuilder.buildRestCanonicalURI(CXFRequestComponent.REQUEST_URI.getComponentAsString(message)).toString(),
+                    restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(CXFRequestComponent.QUERY.getComponentAsString(message)),
                     restCanonicalHeadersBuilder.buildRestCanonicalHeaders(CXFRequestComponent.HEADERS.getComponentAsMap(message)),
                     restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage(message)),
                     restRequestPayloadBuilder.buildRestRequestPayload(payloadHashAlgorithm, getPayloadDataFromMessage(message)));
