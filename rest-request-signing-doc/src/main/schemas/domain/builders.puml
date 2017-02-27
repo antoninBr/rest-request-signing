@@ -1,0 +1,55 @@
+@startuml
+class VersionedBuilder <<interface>>{
+getVersion():BuilderVersion
+}
+
+class AbstractBuilderV1 <<abstract>> implements VersionedBuilder{
+# getHashOfData(hashAlgorithm : HashAlgorithm) : String
+# buildCanonicalEntity(parameters : String...) : String
+# createItemDebugLog(debugLogType : DebugLogType, itemName : String, loggedItem : LoggedItem, object : Object) : String
+}
+
+class RestCanonicalHeadersBuilder <<interface>> extends VersionedBuilder{
+buildRestCanonicalHeaders(headers : Map<String, List<String>>): String
+}
+
+class RestCanonicalQueryStringBuilder <<interface>> extends VersionedBuilder{
+buildRestCanonicalQueryString(queryParameters : String): String
+}
+
+class RestCanonicalRequestBuilder <<interface>> extends VersionedBuilder{
+buildRestCanonicalRequest(httpRequestMethod : String, canonicalURI : String, canonicalQueryString : String, canonicalHeaders : String, signedHeaders : String, requestPayload : String): String
+buildHashedRestCanonicalRequest(hashAlgorithm : HashAlgorithm, httpRequestMethod : String, canonicalURI : String, canonicalQueryString : String, canonicalHeaders : String, signedHeaders : String, requestPayload : String):String
+}
+
+class RestCanonicalURIBuilder <<interface>> extends VersionedBuilder{
+buildRestCanonicalURI(URIAbsolutePath : String): URI
+}
+
+class RestRequestPayloadBuilder <<interface>> extends VersionedBuilder{
+buildRestRequestPayload(hashAlgorithm : HashAlgorithm, restRequestPayload : byte[]): String
+}
+
+class RestSignedHeadersBuilder <<interface>> extends VersionedBuilder{
+buildRestSignedHeaders(restHeaders : Set<String>) : String
+}
+
+class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements RestCanonicalHeadersBuilder{
+}
+
+class RestCanonicalQueryStringBuilderV1 extends AbstractBuilderV1 implements RestCanonicalQueryStringBuilder{
+}
+
+class RestCanonicalRequestBuilderV1 extends AbstractBuilderV1 implements RestCanonicalRequestBuilder{
+}
+
+class RestCanonicalURIBuilderV1 extends AbstractBuilderV1 implements RestCanonicalURIBuilder{
+}
+
+class RestRequestPayloadBuilderV1 extends AbstractBuilderV1 implements RestRequestPayloadBuilder{
+}
+
+class RestSignedHeadersBuilderV1 extends AbstractBuilderV1 implements RestSignedHeadersBuilder{
+}
+
+@enduml
