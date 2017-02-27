@@ -1,0 +1,34 @@
+== Builders ==
+
+The builders take charge of all the rest request canonicalization processing.
+
+Each builder is created to process a certain aspect of the rest request canonicalization.
+
+.Builders Description
+
+|===
+|Name |Description
+
+|RestCanonicalHeadersBuilder
+|Build a canonical String of all the request Headers
+
+|RestCanonicalQueryStringBuilder
+|Build a canonical String of the query String parameters
+
+|RestCanonicalURIBuilder
+|Build a canonical uri of the query URI
+
+|RestRequestPayloadBuilder
+|Build a hashed String of the request Payload
+
+|RestSignedHeadersBuilder
+|Build a canonical String of all the signed request Headers
+
+|RestCanonicalRequestBuilder
+|Build a canonical String of the request using all the previously listed canonical entities
+|===
+
+
+.Builders Domain
+
+image::schemas/builders.png[Builders Domain]

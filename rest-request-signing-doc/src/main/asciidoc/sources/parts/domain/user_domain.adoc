@@ -2,4 +2,37 @@
 
 The User is a key concept of the rest request signing workflow.
 
+.User Types
+
+|===
+|Type |Side |Description |Data
+
+|User
+|Client/Server
+|The root interface that just define a user by its userName
+|userName
+
+|KeyStoreUser
+|Client
+|The user that use a keyStore for its private key storage
+|userName, keyAlias, keyPassword
+
+|SigningUser
+|Client
+|The user that have access to its private key for its canonical rest request signings
+|userName, privateKey
+
+|CandidateUser
+|Server
+|The user that is soon to be authenticated using its retrieved public key
+|userName, publicKey, encryptedRequestKey
+
+|AuthenticatedUser
+|Server
+|The user that is successfully authenticated using rrs4j
+|userName, authenticationDate
+|===
+
+
+.User Domain
 image::schemas/user.png[User Domain]
