@@ -5,15 +5,13 @@ import com.brugnot.security.core.builder.versionning.BuilderVersion;
 import com.brugnot.security.core.builder.versionning.VersionedBuilder;
 import com.brugnot.security.core.builder.versionning.impl.Version1;
 import com.brugnot.security.core.exception.digest.HashCreationException;
+import com.brugnot.security.core.tools.ContentHashProvider;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import com.brugnot.security.rest.commons.logging.DebugLogType;
 import com.brugnot.security.rest.commons.logging.LoggedItem;
 import org.perf4j.aop.Profiled;
 
 import java.security.DigestException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 /**
  * Abstract Builder (V1)
@@ -44,27 +42,10 @@ public abstract class AbstractBuilderV1 implements VersionedBuilder {
     @Profiled
     protected String getHashOfData(HashAlgorithm hashAlgorithm, byte[] data) throws HashCreationException {
 
-        StringBuilder digestDataString = new StringBuilder();
+        ContentHashProvider contentHashProvider = new ContentHashProvider(hashAlgorithm);
 
-        try {
-            MessageDigest md = MessageDigest.getInstance(hashAlgorithm.getHashAlgorithm());
+        return contentHashProvider.createHexaHash(data);
 
-            byte[] digestData = md.digest(data);
-
-            for (int i = 0; i < digestData.length; i++) {
-                if ((0xff & digestData[i]) < 0x10) {
-                    digestDataString.append("0"
-                            + Integer.toHexString((0xFF & digestData[i])));
-                } else {
-                    digestDataString.append(Integer.toHexString(0xFF & digestData[i]));
-                }
-            }
-
-            return digestDataString.toString();
-
-        } catch (NoSuchAlgorithmException e) {
-            throw new HashCreationException("Error while creating data hash : algorithm not recognize",e);
-        }
     }
 
     /**
