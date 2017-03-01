@@ -3,6 +3,10 @@ language: java
 jdk:
   - oraclejdk8
 
+#Set security token for github pushes
+env:
+ - secure: AAAAB3NzaC1yc2EAAAADAQABAAABAQDPr3UgkJ55v1bKdggfGi5p7InukoccvXhC6kFpV4TZSgU+GHPpXbnxFnFXDEpbuhYvahtWFLSpU2WM+jQuJnvTUMQ1qMnv5DmJd+QBZ+ZI2fCCw1H8FAsRTtKZWmJSXx3puGyri72Aj/GU2GKGvd8ypELrqzxSmnAL2bvV8fWXRQTYNZVSlmo+EL8aNlEJpMrUugOsyzmgHZ9BSw8gBqp/NEiqSgpuZ+wDEQoixN26QNOmd7LJanAeeJoQgZEG8uK17xm7KtCWePjV8OEZlc/3L+wsDswyBpQRi3qAvr4IJz/cz5YOzYSIH4ALKzof/BLtG2v9WtjtjI/EkexpVmvN 540e55445e5bad6f98764522
+
 #Only checkout from master
 branches:
   only:
@@ -16,3 +20,10 @@ build:
 
     #Clean Install the uber aggregator
     - mvn clean install
+
+#Commit updated docs to gh-pages github granch    
+after_success:
+  - git add images
+  - git add index.html
+  - git commit -m "Push documentation after successful build from commit $COMMIT [skip ci]" #This is important!
+  - git push origin gh-pages
