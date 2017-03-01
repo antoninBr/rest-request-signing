@@ -3,6 +3,11 @@ language: java
 jdk:
   - oraclejdk8
 
+#Only checkout from master
+branches:
+  only:
+  - master
+  
 build:
   ci:
     #Create folders for test and code coverage
