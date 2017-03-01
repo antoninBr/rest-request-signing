@@ -19,11 +19,11 @@ build:
     - mkdir -p shippable/codecoverage
 
     #Clean Install the uber aggregator
-    - mvn clean install
+    - mvn clean install -P copy-docs-for-deployment
 
 #Commit updated docs to gh-pages github granch    
 after_success:
   - git add images
-  - git add index.html
+  - git add *.html
   - git commit -m "Push documentation after successful build from commit $COMMIT [skip ci]" #This is important!
   - git push origin gh-pages
