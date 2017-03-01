@@ -6,7 +6,9 @@ package com.brugnot.security.rest.commons.hash;
 public enum NormalizedHashAlgorithm implements HashAlgorithm {
 
 
-    SHA_256("SHA-256");
+    SHA_256("SHA-256"),
+    SHA_384("SHA-384"),
+    SHA_512("SHA-512");
 
     private String hashAlgorithm;
 
