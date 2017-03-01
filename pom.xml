@@ -107,7 +107,7 @@
                                     <outputDirectory>${project.basedir}</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>${project.basedir}/rest-request-signing-doc/target/docs</directory>
+                                            <directory>${project.basedir}/target/docs</directory>
                                             <filtering>false</filtering>
                                         </resource>
                                     </resources>
