@@ -1,4 +1,6 @@
-# rest-request-signing
+# rest-request-signing (RRS4J)
+
+rest-request-signing aka __RRS4J__ is a project aimed at providing tools for deploying security over SSL client and server RESTful applications and services in Java. It provides a complete security core with RSA encrytion of canonocal requests and a bunch of custom interceptors for popular JAXRS implementation frameworks such as CXF and RESTEasy + some integration samples (SpringBoot,JBoss,..) with docker support.
 
 [![Run Status](https://api.shippable.com/projects/584eb854938d4210003b7688/badge?branch=master)](https://app.shippable.com/projects/584eb854938d4210003b7688)
 
