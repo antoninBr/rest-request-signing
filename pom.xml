@@ -88,4 +88,36 @@
             </plugin>
         </plugins>
     </build>
+         
+    <profiles>
+        <profile>
+            <id>copy-docs-for-deployment</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-docs</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/rest-request-signing-doc/target/docs</directory>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+         
 </project>
