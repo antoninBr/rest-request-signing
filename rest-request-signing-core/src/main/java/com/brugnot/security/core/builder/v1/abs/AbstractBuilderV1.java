@@ -44,7 +44,7 @@ public abstract class AbstractBuilderV1 implements VersionedBuilder {
 
         ContentHashProvider contentHashProvider = new ContentHashProvider(hashAlgorithm);
 
-        return contentHashProvider.createHexaHash(data);
+        return contentHashProvider.createHexadecimalHash(data);
 
     }
 

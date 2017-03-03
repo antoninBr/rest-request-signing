@@ -13,7 +13,6 @@ import java.security.NoSuchAlgorithmException;
 public class ContentHashProvider {
 
 
-
     /**
      * Hash Algorithm to use
      */
@@ -33,7 +32,7 @@ public class ContentHashProvider {
      * @return The Hexadecimal String of the Hash of the Data
      * @throws HashCreationException
      */
-    public String createHexaHash(byte[] data) throws HashCreationException {
+    public String createHexadecimalHash(byte[] data) throws HashCreationException {
 
         StringBuilder digestDataString = new StringBuilder();
 

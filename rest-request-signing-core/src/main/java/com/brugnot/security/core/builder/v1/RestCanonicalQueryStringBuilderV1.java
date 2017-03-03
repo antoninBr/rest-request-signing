@@ -24,6 +24,9 @@ public class RestCanonicalQueryStringBuilderV1 extends AbstractBuilderV1 impleme
     private static final String QUERY_PARAMS_SEPARATOR = "&";
     private static final String KEY_VALUE_SEPARATOR = "=";
 
+    /**
+     * Logger for this builder
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(RestCanonicalQueryStringBuilderV1.class);
 
     @Profiled

@@ -19,7 +19,7 @@ import java.net.URISyntaxException;
 public class RestCanonicalURIBuilderV1 extends AbstractBuilderV1 implements RestCanonicalURIBuilder{
 
     /**
-     * LOGGER
+     * Logger for this builder
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RestCanonicalURIBuilderV1.class);
 

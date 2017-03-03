@@ -1,6 +1,7 @@
 package com.brugnot.sample.cxf.server.springboot.impl;
 
 import com.brugnot.sample.commons.endpoints.Test;
+import com.brugnot.sample.commons.endpoints.dto.Dto;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Component;
  * Created by Antonin on 09/12/2016.
  */
 @Component
-@org.apache.cxf.interceptor.InInterceptors (interceptors = {"com.brugnot.security.cxf.interceptor.RestSigningInInterceptor" })
 public class TestSpringBootImpl implements Test {
 
 
@@ -18,6 +18,10 @@ public class TestSpringBootImpl implements Test {
 
     public String getTestResponseWithQueryParam(String value){
         return "Hello this is a test returning the value : "+value;
+    }
+
+    public String postWithDto(Dto dto) {
+        return "Hello this is a test returning the String value of the received Dto : "+dto.getStringValue();
     }
 
 }

@@ -17,7 +17,7 @@ public class ContentHashProviderTest {
 
         for (NormalizedHashAlgorithm normalizedHashAlgorithm : NormalizedHashAlgorithm.values()){
             ContentHashProvider contentHashProvider = new ContentHashProvider(normalizedHashAlgorithm);
-            String hexadecimalHash = contentHashProvider.createHexaHash(testContent);
+            String hexadecimalHash = contentHashProvider.createHexadecimalHash(testContent);
             Assert.assertNotNull(hexadecimalHash);
 
         }

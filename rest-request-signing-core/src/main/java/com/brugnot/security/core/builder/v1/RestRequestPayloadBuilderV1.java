@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
  */
 public class RestRequestPayloadBuilderV1 extends AbstractBuilderV1 implements RestRequestPayloadBuilder {
 
+    /**
+     * Logger for this builder
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(RestRequestPayloadBuilderV1.class);
-
 
     @Profiled
     public String buildRestRequestPayload(HashAlgorithm hashAlgorithm, byte[] restRequestPayload) throws RestRequestPayloadBuildingException {

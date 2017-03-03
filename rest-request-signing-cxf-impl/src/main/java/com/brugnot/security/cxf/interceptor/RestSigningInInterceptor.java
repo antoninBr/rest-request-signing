@@ -2,13 +2,17 @@ package com.brugnot.security.cxf.interceptor;
 
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestDecryptor;
 import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
+import com.brugnot.security.core.exception.builder.RestBuilderException;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
 import com.brugnot.security.core.exception.user.UserAuthenticationException;
 import com.brugnot.security.core.user.AuthenticatedUserCreator;
 import com.brugnot.security.core.user.AuthenticatedUserHolder;
 import com.brugnot.security.core.user.CandidateUserCreator;
 import com.brugnot.security.cxf.interceptor.abs.AbstractCxfRestInOperation;
+import com.brugnot.security.cxf.interceptor.exception.RequestComponentExtractionException;
+import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.SecurityHeadersExtractionException;
+import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import com.brugnot.security.rest.commons.hash.NormalizedHashAlgorithm;
 import com.brugnot.security.rest.commons.header.RestSecurityHeaders;
 import com.brugnot.security.rest.commons.header.RestSecurityHeadersEnum;
@@ -44,12 +48,12 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
             String canonicalRequestKey = extractRestSecurityHeader(headers, RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_KEY);
             CandidateUser candidateUser = candidateUserCreator.createCandidateUser(candidateName,canonicalRequestKey);
 
-            payloadHashAlgorithm = NormalizedHashAlgorithm.createNormalizedHashAlgorithm(extractRestSecurityHeader(headers, RestSecurityHeadersEnum.REST_PAYLOAD_HASH_ALGORITHM));
-            requestHashAlgorithm = NormalizedHashAlgorithm.createNormalizedHashAlgorithm(extractRestSecurityHeader(headers, RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_HASH_ALGORITHM));
-
-            String hashedLocalRequest = buildRestRequestFromMessage(message);
+            HashAlgorithm payloadHashAlgorithm = NormalizedHashAlgorithm.createNormalizedHashAlgorithm(extractRestSecurityHeader(headers, RestSecurityHeadersEnum.REST_PAYLOAD_HASH_ALGORITHM));
+            HashAlgorithm requestHashAlgorithm = NormalizedHashAlgorithm.createNormalizedHashAlgorithm(extractRestSecurityHeader(headers, RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_HASH_ALGORITHM));
 
             String cryptedHashedRequest = extractRestSecurityHeader(headers,RestSecurityHeadersEnum.REST_CANONICAL_REQUEST);
+
+            String hashedLocalRequest = buildRestRequestFromMessage(message,requestHashAlgorithm,payloadHashAlgorithm);
 
             DecryptionWrapper decryptionWrapper = hashedRestCanonicalRequestDecryptor.decryptHashedRestCanonicalRequest(candidateUser,cryptedHashedRequest);
 
@@ -64,6 +68,12 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
         } catch (SecurityHeadersExtractionException e) {
             e.printStackTrace();
         } catch (HashedRestCanonicalRequestDecryptingException e) {
+            e.printStackTrace();
+        } catch (RequestComponentExtractionException e) {
+            e.printStackTrace();
+        } catch (RestBuilderException e) {
+            e.printStackTrace();
+        } catch (RequestPayloadExtractionException e) {
             e.printStackTrace();
         }
     }

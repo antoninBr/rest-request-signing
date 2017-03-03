@@ -20,6 +20,9 @@ import java.util.TreeSet;
  */
 public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements RestCanonicalHeadersBuilder {
 
+    /**
+     * Logger for this builder
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(RestCanonicalHeadersBuilderV1.class);
 
     @Profiled

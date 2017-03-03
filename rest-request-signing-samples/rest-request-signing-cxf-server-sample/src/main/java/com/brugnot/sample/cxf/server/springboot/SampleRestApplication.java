@@ -1,5 +1,7 @@
 package com.brugnot.sample.cxf.server.springboot;
 
+import com.brugnot.security.core.builder.*;
+import com.brugnot.security.core.builder.v1.*;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestDecryptor;
 import com.brugnot.security.core.crypt.impl.RSARequestEncryption;
 import com.brugnot.security.core.user.AuthenticatedUserCreator;
@@ -14,9 +16,11 @@ import com.brugnot.security.rest.commons.user.AuthenticatedUser;
 import com.brugnot.security.rest.commons.user.KeystoreUser;
 import org.apache.cxf.bus.spring.SpringBus;
 import org.apache.cxf.endpoint.Server;
+import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.lifecycle.ResourceProvider;
 import org.apache.cxf.jaxrs.spring.SpringResourceFactory;
+import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.perf4j.slf4j.aop.TimingAspect;
@@ -74,10 +78,12 @@ public class SampleRestApplication {
             factory.setBus(ctx.getBean(SpringBus.class));
             factory.setProviders(Arrays.asList(new JacksonJsonProvider()));
             factory.setResourceProviders(resourceProviders);
+            factory.setInInterceptors(Arrays.<Interceptor<? extends Message>>asList(restSigningInInterceptor()));
             return factory.create();
         } else {
             return null;
         }
+
     }
 
     @Bean
@@ -134,6 +140,36 @@ public class SampleRestApplication {
         };
     }
 
+    @Bean
+    public RestCanonicalRequestBuilder restCanonicalRequestBuilder(){
+        return new RestCanonicalRequestBuilderV1();
+    }
+
+    @Bean
+    public RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder(){
+        return new RestCanonicalQueryStringBuilderV1();
+    }
+
+    @Bean
+    public RestCanonicalURIBuilder restCanonicalURIBuilder(){
+        return new RestCanonicalURIBuilderV1();
+    }
+
+    @Bean
+    public RestCanonicalHeadersBuilder restCanonicalHeadersBuilder(){
+        return new RestCanonicalHeadersBuilderV1();
+    }
+
+    @Bean
+    public RestRequestPayloadBuilder restRequestPayloadBuilder(){
+        return new RestRequestPayloadBuilderV1();
+    }
+
+    @Bean
+    public RestSignedHeadersBuilder restSignedHeadersBuilder(){
+        return new RestSignedHeadersBuilderV1();
+    }
+
     /**
      * Add Per4J Timing Aspect
      * @return timing aspect
@@ -142,6 +178,5 @@ public class SampleRestApplication {
     public TimingAspect timingAspect(){
         return new TimingAspect();
     }
-
 
 }

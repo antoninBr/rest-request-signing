@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class RestCanonicalRequestBuilderV1 extends AbstractBuilderV1 implements RestCanonicalRequestBuilder{
 
     /**
-     *
+     * Logger for this builder
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(RestCanonicalRequestBuilderV1.class);
 

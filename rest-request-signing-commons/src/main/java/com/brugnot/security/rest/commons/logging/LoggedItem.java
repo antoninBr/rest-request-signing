@@ -10,6 +10,7 @@ public enum LoggedItem {
 
     MAP(true, "getSize",false),
     LIST(true, "getSize",false),
+    SET(true,"size",true),
     STRING(false, null,true),
     BYTE_ARRAY(true,"length",false),
     COMPLEX_OBJECT(false,null,true);

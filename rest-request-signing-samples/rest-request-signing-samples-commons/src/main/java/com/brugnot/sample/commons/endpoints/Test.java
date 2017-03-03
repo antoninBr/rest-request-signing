@@ -1,6 +1,9 @@
 package com.brugnot.sample.commons.endpoints;
 
+import com.brugnot.sample.commons.endpoints.dto.Dto;
+
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
@@ -18,4 +21,9 @@ public interface Test {
     @GET
     @Path("/simpleResponseWithParam")
     String getTestResponseWithQueryParam(@QueryParam("value") String value);
+
+    @POST
+    @Path("/postWithDto")
+    String postWithDto(Dto dto);
+
 }

@@ -67,7 +67,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
 
 
         LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"hashed canonical request to encrypt",LoggedItem.STRING,hashedRestCanonicalRequest));
-        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"signing user",LoggedItem.COMPLEX_OBJECT,hashedRestCanonicalRequest));
+        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"signing user",LoggedItem.COMPLEX_OBJECT,user));
 
         long startTime = System.currentTimeMillis();
 

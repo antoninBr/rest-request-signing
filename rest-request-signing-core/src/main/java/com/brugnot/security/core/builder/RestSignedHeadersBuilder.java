@@ -14,9 +14,9 @@ public interface RestSignedHeadersBuilder extends VersionedBuilder {
 
     /**
      * Build the Rest Signed Headers Given Provided Headers Names
-     * @param restHeaders
+     * @param signedHeaders
      * @return rest signed headers
      * @throws RestSignedHeadersBuildingException
      */
-    String buildRestSignedHeaders(Set<String> restHeaders) throws RestSignedHeadersBuildingException;
+    String buildRestSignedHeaders(Set<String> signedHeaders) throws RestSignedHeadersBuildingException;
 }

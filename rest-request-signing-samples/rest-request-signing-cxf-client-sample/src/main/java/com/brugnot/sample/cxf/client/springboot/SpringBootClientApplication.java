@@ -1,6 +1,7 @@
 package com.brugnot.sample.cxf.client.springboot;
 
 import com.brugnot.sample.commons.endpoints.Test;
+import com.brugnot.sample.commons.endpoints.dto.Dto;
 import com.brugnot.security.core.builder.*;
 import com.brugnot.security.core.builder.v1.*;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestEncryptor;
@@ -19,6 +20,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+import java.util.Date;
 
 /**
  * Created by A505878 on 13/12/2016.
@@ -39,7 +42,8 @@ public class SpringBootClientApplication {
 
             @Override
             public void run(String... runArgs) throws Exception {
-                System.out.println(test.getTestResponseWithQueryParam("myParam"));
+               System.out.println(test.getTestResponseWithQueryParam("myParam"));
+               // test.postWithDto(new Dto("test",1, new Date()));
             }
         };
     }

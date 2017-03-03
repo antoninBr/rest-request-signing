@@ -1,5 +1,10 @@
 package com.brugnot.security.cxf.interceptor.abs;
 
+import com.brugnot.security.core.builder.*;
+import com.brugnot.security.core.exception.builder.RestBuilderException;
+import com.brugnot.security.cxf.commons.CXFRequestComponent;
+import com.brugnot.security.cxf.commons.InPayloadDataProvider;
+import com.brugnot.security.cxf.interceptor.exception.RequestComponentExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import org.apache.cxf.helpers.IOUtils;
@@ -8,8 +13,11 @@ import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.AbstractPhaseInterceptor;
 import org.apache.cxf.phase.Phase;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Antonin on 17/01/2017.
@@ -17,46 +25,65 @@ import java.io.InputStream;
 public abstract class AbstractCxfRestInOperation extends
         AbstractPhaseInterceptor<Message> {
 
-    protected HashAlgorithm payloadHashAlgorithm;
-
-    protected HashAlgorithm requestHashAlgorithm;
-
     public AbstractCxfRestInOperation() {
         super(Phase.READ);
     }
 
+    private RestCanonicalRequestBuilder restCanonicalRequestBuilder;
 
-    protected String buildRestRequestFromMessage(Message message) {
-        return null;
-    }
-    /**
-     * Get Inbound Message Content Data (create a copy of the message
-     * inputStream)
-     *
-     * @param message
-     * @return content data
-     */
-    public static byte[] getInContentData(Message message) throws RequestPayloadExtractionException {
+    private RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder;
 
-        byte[] contentData = null;
+    private RestCanonicalURIBuilder restCanonicalURIBuilder;
 
-        try {
-            // Create a Copy of the Input Stream
-            CachedOutputStream cachedOutputStream = new CachedOutputStream();
-            InputStream is = message.getContent(InputStream.class);
-            IOUtils.copy(is, cachedOutputStream);
+    private RestCanonicalHeadersBuilder restCanonicalHeadersBuilder;
 
-            message.setContent(InputStream.class, cachedOutputStream.getInputStream());
+    private RestRequestPayloadBuilder restRequestPayloadBuilder;
 
-            if (cachedOutputStream.getInputStream() != null) {
-                contentData = IOUtils.readBytesFromStream(cachedOutputStream.getInputStream());
-            }
+    private RestSignedHeadersBuilder restSignedHeadersBuilder;
 
-        } catch (IOException e) {
-            throw new RequestPayloadExtractionException("Error while Reading the Data from the Request Payload OutputStream",e);
-        }
+    protected String buildRestRequestFromMessage(Message message,HashAlgorithm requestHashAlgorithm, HashAlgorithm payloadHashAlgorithm) throws RequestComponentExtractionException, RestBuilderException, RequestPayloadExtractionException {
 
-        return contentData;
+        return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
+                requestHashAlgorithm,
+                CXFRequestComponent.METHOD.getComponentAsString(message),
+                restCanonicalURIBuilder.buildRestCanonicalURI(CXFRequestComponent.REQUEST_URI.getComponentAsString(message)).toString(),
+                restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(CXFRequestComponent.QUERY.getComponentAsString(message)),
+                restCanonicalHeadersBuilder.buildRestCanonicalHeaders(CXFRequestComponent.HEADERS.getComponentAsMap(message)),
+                restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage()),
+                restRequestPayloadBuilder.buildRestRequestPayload(payloadHashAlgorithm, InPayloadDataProvider.getInContentData(message)));
     }
 
+    @Inject
+    public void setRestCanonicalRequestBuilder(RestCanonicalRequestBuilder restCanonicalRequestBuilder) {
+        this.restCanonicalRequestBuilder = restCanonicalRequestBuilder;
+    }
+
+    @Inject
+    public void setRestCanonicalQueryStringBuilder(RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder) {
+        this.restCanonicalQueryStringBuilder = restCanonicalQueryStringBuilder;
+    }
+
+    @Inject
+    public void setRestCanonicalURIBuilder(RestCanonicalURIBuilder restCanonicalURIBuilder) {
+        this.restCanonicalURIBuilder = restCanonicalURIBuilder;
+    }
+
+    @Inject
+    public void setRestCanonicalHeadersBuilder(RestCanonicalHeadersBuilder restCanonicalHeadersBuilder) {
+        this.restCanonicalHeadersBuilder = restCanonicalHeadersBuilder;
+    }
+
+    @Inject
+    public void setRestRequestPayloadBuilder(RestRequestPayloadBuilder restRequestPayloadBuilder) {
+        this.restRequestPayloadBuilder = restRequestPayloadBuilder;
+    }
+
+    @Inject
+    public void setRestSignedHeadersBuilder(RestSignedHeadersBuilder restSignedHeadersBuilder) {
+        this.restSignedHeadersBuilder = restSignedHeadersBuilder;
+    }
+
+    public Set<String> getRestSignedHeadersFromMessage() {
+        return new TreeSet<String>();
+    }
 }
