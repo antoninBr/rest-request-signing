@@ -31,4 +31,4 @@ after_success:
   - git add images/*
   - git add *.html
   - git commit -m "Push documentation after successful build from commit $COMMIT [skip ci]" #This is important!
-  - git push origin gh-pages
+  - git push origin master:gh-pages
