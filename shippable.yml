@@ -7,6 +7,10 @@ jdk:
 branches:
   only:
   - master
+
+#Install graphviz for plantUML schemas as png....
+before_install:
+  - sudo apt-get install graphviz
   
 #Use ssh instead of https for github repo  
 before_script:
