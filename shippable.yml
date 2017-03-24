@@ -10,7 +10,7 @@ branches:
   
 #Use ssh instead of https for github repo  
 before_script:
-   - git remote set-url origin git@github.com:$REPO_NAME.git
+   - git remote set-url origin git@github.com:antoninBr/rest-request-signing.git
    - git config --get remote.origin.url
    
 build:
