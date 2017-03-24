@@ -6,18 +6,18 @@ import com.brugnot.security.rest.commons.user.SigningUser;
 import java.security.PrivateKey;
 
 /**
- * Signing User Implementation
+ * Signing user Implementation
  * Created by Antonin on 03/12/2016.
  */
 public class SigningUserImpl extends AbstractUser implements SigningUser {
 
     /**
-     * The Signing User Private Key
+     * The Signing user Private Key
      */
     private PrivateKey privateKey;
 
     /**
-     * Signing User Constructor
+     * Signing user Constructor
      * @param userName
      * @param privateKey
      */

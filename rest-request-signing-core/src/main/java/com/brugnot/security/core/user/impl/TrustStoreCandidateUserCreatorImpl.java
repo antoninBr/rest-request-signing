@@ -45,7 +45,7 @@ public class TrustStoreCandidateUserCreatorImpl extends AbstractKeystoreUserOper
                 }
         }
 
-        throw new UserAuthenticationException("Unknown User Name : '"+candidateName+"'");
+        throw new UserAuthenticationException("Unknown user Name : '"+candidateName+"'");
 
     }
 

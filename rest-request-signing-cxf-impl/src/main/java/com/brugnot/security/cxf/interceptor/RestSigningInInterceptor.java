@@ -8,8 +8,9 @@ import com.brugnot.security.core.exception.user.UserAuthenticationException;
 import com.brugnot.security.core.user.AuthenticatedUserCreator;
 import com.brugnot.security.core.user.AuthenticatedUserHolder;
 import com.brugnot.security.core.user.CandidateUserCreator;
+import com.brugnot.security.cxf.commons.CXFFaultProvider;
 import com.brugnot.security.cxf.interceptor.abs.AbstractCxfRestInOperation;
-import com.brugnot.security.cxf.interceptor.exception.RequestComponentExtractionException;
+import com.brugnot.security.rest.commons.exception.RequestComponentExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.SecurityHeadersExtractionException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
@@ -29,14 +30,31 @@ import java.util.Map;
  */
 public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
 
+    /**
+     * Candidate User Creator
+     */
     private CandidateUserCreator candidateUserCreator;
 
+    /**
+     * Hashed Rest Canonical Request Decryptor
+     */
     private HashedRestCanonicalRequestDecryptor hashedRestCanonicalRequestDecryptor;
 
+    /**
+     *Authenticated User Creator
+     */
     private AuthenticatedUserCreator authenticatedUserCreator;
 
+    /**
+     *Authenticated User Holder (request scoped)
+     */
     private AuthenticatedUserHolder holder;
 
+    /**
+     * Handle incoming Message and check the siging
+     * @param message
+     * @throws Fault
+     */
     public void handleMessage(Message message) throws Fault {
 
         Map<String, List<String>> headers = (Map<String, List<String>>) message
@@ -60,24 +78,33 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
             if(decryptionWrapper.getProcessedRequest().equals(hashedLocalRequest)){
                 holder.hold(authenticatedUserCreator.createAuthenticatedUser(candidateUser));
             }else{
-
+                throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new Exception(""));
             }
 
         } catch (UserAuthenticationException e) {
-            e.printStackTrace();
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (SecurityHeadersExtractionException e) {
-            e.printStackTrace();
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (HashedRestCanonicalRequestDecryptingException e) {
-            e.printStackTrace();
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RequestComponentExtractionException e) {
-            e.printStackTrace();
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RestBuilderException e) {
-            e.printStackTrace();
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RequestPayloadExtractionException e) {
-            e.printStackTrace();
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         }
     }
 
+
+    /**
+     * Extract Incoming Request Rest Security Header
+     * @TODO: Make this global
+     * @param headers
+     * @param restSecurityHeaders
+     * @return extracted rest security header value
+     * @throws SecurityHeadersExtractionException
+     */
     private String extractRestSecurityHeader(Map<String, List<String>> headers, RestSecurityHeaders restSecurityHeaders) throws SecurityHeadersExtractionException {
 
         List<String> securityHeaderValues =  headers.get(restSecurityHeaders.getNormalizedName());

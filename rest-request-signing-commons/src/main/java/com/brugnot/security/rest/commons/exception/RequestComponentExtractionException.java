@@ -1,4 +1,4 @@
-package com.brugnot.security.cxf.interceptor.exception;
+package com.brugnot.security.rest.commons.exception;
 
 /**
  * Request Component Extraction Exception
