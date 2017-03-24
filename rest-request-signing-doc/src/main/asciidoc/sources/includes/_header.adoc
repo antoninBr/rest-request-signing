@@ -16,7 +16,7 @@
 ++++
 <style>
 h2 {
-    background-color: #ba3925;
+    background-color: #24ba9c;
     color: white !important;
     padding: 5px;
 }
@@ -25,12 +25,12 @@ h2 a {
 }
 
 h3 {
-    border-bottom: 5px #ba3925 solid;
+    border-bottom: 5px #24ba9c solid;
 }
 
 th {
 
-    background-color: #ba3925;
+    background-color: #24ba9c;
     color: white !important;
 
 }
@@ -52,7 +52,7 @@ table tr:nth-of-type(2n) {
 
 .sectlevel1 > li > a {
 
-    color: #ba3925;
+    color: #24ba9c;
     font-weight: bold;
 
 }
