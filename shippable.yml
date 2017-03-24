@@ -3,11 +3,6 @@ language: java
 jdk:
   - oraclejdk8
 
-#Set security token for github pushes
-env:
-  global:
-    - secure: AAAAB3NzaC1yc2EAAAADAQABAAABAQDPr3UgkJ55v1bKdggfGi5p7InukoccvXhC6kFpV4TZSgU+GHPpXbnxFnFXDEpbuhYvahtWFLSpU2WM+jQuJnvTUMQ1qMnv5DmJd+QBZ+ZI2fCCw1H8FAsRTtKZWmJSXx3puGyri72Aj/GU2GKGvd8ypELrqzxSmnAL2bvV8fWXRQTYNZVSlmo+EL8aNlEJpMrUugOsyzmgHZ9BSw8gBqp/NEiqSgpuZ+wDEQoixN26QNOmd7LJanAeeJoQgZEG8uK17xm7KtCWePjV8OEZlc/3L+wsDswyBpQRi3qAvr4IJz/cz5YOzYSIH4ALKzof/BLtG2v9WtjtjI/EkexpVmvN
-
 #Only checkout from master
 branches:
   only:
