@@ -8,6 +8,11 @@ branches:
   only:
   - master
   
+#Use ssh instead of https for github repo  
+before_script:
+   - git remote set-url origin git@github.com:$REPO_NAME.git
+   - git config --get remote.origin.url
+   
 build:
   ci:
     #Create folders for test and code coverage
