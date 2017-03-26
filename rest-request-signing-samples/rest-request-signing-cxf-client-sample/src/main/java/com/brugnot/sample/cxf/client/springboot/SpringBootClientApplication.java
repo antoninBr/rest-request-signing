@@ -28,12 +28,16 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class SpringBootClientApplication {
 
+    /**
+     * Main method to launch the client app
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(SpringBootClientApplication.class, args);
     }
 
     @Bean
-    CommandLineRunner initProxyClientRunner(final Test test) {
+    public CommandLineRunner initProxyClientRunner(final Test test) {
 
         return new CommandLineRunner() {
 
