@@ -3,13 +3,13 @@ package com.brugnot.security.core.user.impl.abs;
 import com.brugnot.security.rest.commons.user.User;
 
 /**
- * Abstract User Implementation
+ * Abstract user Implementation
  * Created by Antonin on 03/12/2016.
  */
 public class AbstractUser implements User{
 
     /***
-     * User Name
+     * user Name
      */
     private String userName;
 

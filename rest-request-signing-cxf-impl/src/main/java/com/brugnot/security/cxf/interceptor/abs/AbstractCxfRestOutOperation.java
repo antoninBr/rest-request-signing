@@ -4,7 +4,7 @@ import com.brugnot.security.core.builder.*;
 import com.brugnot.security.core.exception.builder.RestBuilderException;
 import com.brugnot.security.cxf.commons.CXFRequestComponent;
 import com.brugnot.security.cxf.commons.OutPayloadDataProvider;
-import com.brugnot.security.cxf.interceptor.exception.RequestComponentExtractionException;
+import com.brugnot.security.rest.commons.exception.RequestComponentExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import org.apache.cxf.interceptor.AbstractOutDatabindingInterceptor;
@@ -20,26 +20,37 @@ import java.util.TreeSet;
  */
 public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabindingInterceptor {
 
+    /**
+     * All the Builders needed
+     */
     private RestCanonicalRequestBuilder restCanonicalRequestBuilder;
-
     private RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder;
-
     private RestCanonicalURIBuilder restCanonicalURIBuilder;
-
     private RestCanonicalHeadersBuilder restCanonicalHeadersBuilder;
-
     private RestRequestPayloadBuilder restRequestPayloadBuilder;
-
     private RestSignedHeadersBuilder restSignedHeadersBuilder;
 
+    /**
+     * The Hash Algorithms for the request and the request payload
+     */
     protected HashAlgorithm requestHashAlgorithm;
-
     protected HashAlgorithm payloadHashAlgorithm;
 
+    /**
+     * Interceptor Constructor with Phase
+     */
     public AbstractCxfRestOutOperation() {
         super(Phase.POST_LOGICAL);
     }
 
+    /**
+     *
+     * @param message
+     * @return
+     * @throws RestBuilderException
+     * @throws RequestPayloadExtractionException
+     * @throws RequestComponentExtractionException
+     */
     protected String buildRestRequestFromMessage(Message message) throws RestBuilderException, RequestPayloadExtractionException, RequestComponentExtractionException {
 
             return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
@@ -54,6 +65,11 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
 
     }
 
+    /**
+     *
+     * @param message
+     * @return
+     */
     private Set<String> getRestSignedHeadersFromMessage(Message message) {
         return new TreeSet<String>();
     }

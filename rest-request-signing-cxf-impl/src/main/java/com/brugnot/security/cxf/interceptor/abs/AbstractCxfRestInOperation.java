@@ -4,7 +4,7 @@ import com.brugnot.security.core.builder.*;
 import com.brugnot.security.core.exception.builder.RestBuilderException;
 import com.brugnot.security.cxf.commons.CXFRequestComponent;
 import com.brugnot.security.cxf.commons.InPayloadDataProvider;
-import com.brugnot.security.cxf.interceptor.exception.RequestComponentExtractionException;
+import com.brugnot.security.rest.commons.exception.RequestComponentExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import org.apache.cxf.message.Message;
@@ -16,27 +16,40 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
+ * Abstract Cxf Rest In Operation that extends an Interceptor
  * Created by Antonin on 17/01/2017.
  */
 public abstract class AbstractCxfRestInOperation extends
         AbstractPhaseInterceptor<Message> {
 
+    /**
+     * All the Builders needed
+     */
+    private RestCanonicalRequestBuilder restCanonicalRequestBuilder;
+    private RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder;
+    private RestCanonicalURIBuilder restCanonicalURIBuilder;
+    private RestCanonicalHeadersBuilder restCanonicalHeadersBuilder;
+    private RestRequestPayloadBuilder restRequestPayloadBuilder;
+    private RestSignedHeadersBuilder restSignedHeadersBuilder;
+
+    /**
+     * Interceptor Constructor with Phase
+     */
     public AbstractCxfRestInOperation() {
         super(Phase.READ);
     }
 
-    private RestCanonicalRequestBuilder restCanonicalRequestBuilder;
-
-    private RestCanonicalQueryStringBuilder restCanonicalQueryStringBuilder;
-
-    private RestCanonicalURIBuilder restCanonicalURIBuilder;
-
-    private RestCanonicalHeadersBuilder restCanonicalHeadersBuilder;
-
-    private RestRequestPayloadBuilder restRequestPayloadBuilder;
-
-    private RestSignedHeadersBuilder restSignedHeadersBuilder;
-
+    /**
+     * Build the Canonical Rest Request From the Message
+     * (The request is also hashed)
+     * @param message
+     * @param requestHashAlgorithm
+     * @param payloadHashAlgorithm
+     * @return hashed canonical rest request
+     * @throws RequestComponentExtractionException
+     * @throws RestBuilderException
+     * @throws RequestPayloadExtractionException
+     */
     protected String buildRestRequestFromMessage(Message message,HashAlgorithm requestHashAlgorithm, HashAlgorithm payloadHashAlgorithm) throws RequestComponentExtractionException, RestBuilderException, RequestPayloadExtractionException {
 
         return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
@@ -47,6 +60,10 @@ public abstract class AbstractCxfRestInOperation extends
                 restCanonicalHeadersBuilder.buildRestCanonicalHeaders(CXFRequestComponent.HEADERS.getComponentAsMap(message)),
                 restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage()),
                 restRequestPayloadBuilder.buildRestRequestPayload(payloadHashAlgorithm, InPayloadDataProvider.getInContentData(message)));
+    }
+
+    private Set<String> getRestSignedHeadersFromMessage() {
+        return new TreeSet<String>();
     }
 
     @Inject
@@ -79,7 +96,5 @@ public abstract class AbstractCxfRestInOperation extends
         this.restSignedHeadersBuilder = restSignedHeadersBuilder;
     }
 
-    public Set<String> getRestSignedHeadersFromMessage() {
-        return new TreeSet<String>();
-    }
+
 }

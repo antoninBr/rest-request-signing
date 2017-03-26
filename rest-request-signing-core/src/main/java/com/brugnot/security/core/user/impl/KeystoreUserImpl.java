@@ -10,17 +10,17 @@ import com.brugnot.security.rest.commons.user.KeystoreUser;
 public class KeystoreUserImpl extends AbstractUser implements KeystoreUser {
 
     /**
-     * User Key Alias within the Keystore
+     * user Key Alias within the Keystore
      */
     private String keyAlias;
 
     /**
-     * User Key Password (if needed)
+     * user Key Password (if needed)
      */
     private String keyPassword;
 
     /**
-     * Keystore User Constructor
+     * Keystore user Constructor
      * @param userName
      * @param keyAlias
      * @param keyPassword

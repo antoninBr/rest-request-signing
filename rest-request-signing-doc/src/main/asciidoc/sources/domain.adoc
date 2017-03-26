@@ -4,6 +4,7 @@
 include::includes/_header.adoc[]
 
 include::parts/domain/user_domain.adoc[]
+include::parts/domain/builders_domain.adoc[]
 
 // Footer to include in every page
 include::includes/_footer.adoc[]

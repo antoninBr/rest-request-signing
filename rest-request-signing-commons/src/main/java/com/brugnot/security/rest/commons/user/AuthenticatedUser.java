@@ -8,7 +8,7 @@ import java.util.Date;
 public interface AuthenticatedUser extends User{
 
     /**
-     * Get this User Authentication Date
+     * Get this user Authentication Date
      * @return authenticationDate
      */
     Date getUserAuthenticationDate();

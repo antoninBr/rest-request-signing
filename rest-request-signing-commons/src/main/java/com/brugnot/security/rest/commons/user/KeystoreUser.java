@@ -6,13 +6,13 @@ package com.brugnot.security.rest.commons.user;
 public interface KeystoreUser extends User {
 
     /**
-     * Keystore User Key Alias
+     * Keystore user Key Alias
      * @return key alias
      */
     String getKeyAlias();
 
     /**
-     * Keystore User Key Password if exist
+     * Keystore user Key Password if exist
      * @return key password
      */
     String getKeyPassword();

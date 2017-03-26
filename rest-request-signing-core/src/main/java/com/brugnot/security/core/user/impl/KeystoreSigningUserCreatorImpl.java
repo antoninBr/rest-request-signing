@@ -24,11 +24,11 @@ public class KeystoreSigningUserCreatorImpl extends AbstractKeystoreUserOperatio
         try {
             privateKey = (PrivateKey) keystoreLoader.getKeyStore().getKey(user.getKeyAlias(),user.getKeyPassword().toCharArray());
         } catch (KeyStoreException e) {
-            throw new SigningUserCreationException("Error while consulting the User Keystore",e);
+            throw new SigningUserCreationException("Error while consulting the user Keystore",e);
         } catch (NoSuchAlgorithmException e) {
-            throw new SigningUserCreationException("Error while consulting the User Keystore",e);
+            throw new SigningUserCreationException("Error while consulting the user Keystore",e);
         } catch (UnrecoverableKeyException e) {
-            throw new SigningUserCreationException("Error while consulting the User Keystore",e);
+            throw new SigningUserCreationException("Error while consulting the user Keystore",e);
         }
 
         return new SigningUserImpl(user.getUserName(),privateKey);
