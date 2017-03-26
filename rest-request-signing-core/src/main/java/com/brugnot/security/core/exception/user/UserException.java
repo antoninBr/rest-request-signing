@@ -5,15 +5,21 @@ package com.brugnot.security.core.exception.user;
  */
 public class UserException extends Exception{
 
+    /**
+     *
+     * @param message
+     */
     public UserException(String message) {
         super(message);
     }
 
+    /**
+     * 
+     * @param message
+     * @param cause
+     */
     public UserException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public UserException(Throwable cause) {
-        super(cause);
-    }
 }

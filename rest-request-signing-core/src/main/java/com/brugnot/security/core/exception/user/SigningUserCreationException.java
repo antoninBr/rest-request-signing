@@ -7,15 +7,13 @@ package com.brugnot.security.core.exception.user;
  */
 public class SigningUserCreationException extends UserException {
 
-    public SigningUserCreationException(String message) {
-        super(message);
-    }
-
+    /**
+     *
+     * @param message
+     * @param cause
+     */
     public SigningUserCreationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public SigningUserCreationException(Throwable cause) {
-        super(cause);
-    }
 }

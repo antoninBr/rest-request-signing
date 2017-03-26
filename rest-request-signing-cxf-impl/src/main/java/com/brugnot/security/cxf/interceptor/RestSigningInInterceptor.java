@@ -12,7 +12,7 @@ import com.brugnot.security.cxf.commons.CXFFaultProvider;
 import com.brugnot.security.cxf.interceptor.abs.AbstractCxfRestInOperation;
 import com.brugnot.security.rest.commons.exception.RequestComponentExtractionException;
 import com.brugnot.security.cxf.interceptor.exception.RequestPayloadExtractionException;
-import com.brugnot.security.cxf.interceptor.exception.SecurityHeadersExtractionException;
+import com.brugnot.security.rest.commons.exception.SecurityHeadersExtractionException;
 import com.brugnot.security.rest.commons.hash.HashAlgorithm;
 import com.brugnot.security.rest.commons.hash.NormalizedHashAlgorithm;
 import com.brugnot.security.rest.commons.header.RestSecurityHeaders;
@@ -51,7 +51,7 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
     private AuthenticatedUserHolder holder;
 
     /**
-     * Handle incoming Message and check the siging
+     * Handle incoming Message and check the signing
      * @param message
      * @throws Fault
      */
@@ -78,7 +78,7 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
             if(decryptionWrapper.getProcessedRequest().equals(hashedLocalRequest)){
                 holder.hold(authenticatedUserCreator.createAuthenticatedUser(candidateUser));
             }else{
-                throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new Exception(""));
+                throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new UserAuthenticationException("Canonical Requests do not match each other"));
             }
 
         } catch (UserAuthenticationException e) {
@@ -116,6 +116,7 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
                 return null;
             }
         }else{
+            //Get the first value of the list
             return securityHeaderValues.get(0);
         }
     }

@@ -5,10 +5,11 @@ package com.brugnot.security.core.exception.crypt;
  */
 public class HashedRestCanonicalRequestDecryptingException extends CryptoComponentInstantiationException {
 
-    public HashedRestCanonicalRequestDecryptingException(String message) {
-        super(message);
-    }
-
+    /**
+     *
+     * @param message
+     * @param cause
+     */
     public HashedRestCanonicalRequestDecryptingException(String message, Throwable cause) {
         super(message, cause);
     }

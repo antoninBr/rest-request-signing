@@ -21,6 +21,7 @@
     <modules>
 
         <module>rest-request-signing-logging-dependencies</module>
+        <module>rest-request-signing-tests-dependencies</module>
 
         <module>rest-request-signing-commons</module>
         <module>rest-request-signing-core</module>
@@ -29,6 +30,7 @@
         <module>rest-request-signing-samples</module>
 
         <module>rest-request-signing-doc</module>
+
     </modules>
 
     <dependencyManagement>
@@ -37,6 +39,15 @@
             <dependency>
                 <groupId>com.brugnot.security</groupId>
                 <artifactId>rest-request-signing-logging-dependencies</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Import this dependencies that handles all the tests dependencies-->
+            <dependency>
+                <groupId>com.brugnot.security</groupId>
+                <artifactId>rest-request-signing-tests-dependencies</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>

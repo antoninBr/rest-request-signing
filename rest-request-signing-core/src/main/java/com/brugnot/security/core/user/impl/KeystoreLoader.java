@@ -1,5 +1,7 @@
 package com.brugnot.security.core.user.impl;
 
+import com.brugnot.security.core.exception.loader.KeystoreLoaderException;
+
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,19 +31,19 @@ public class KeystoreLoader {
     }
 
     @PostConstruct
-    public void load(){
+    public void load() throws KeystoreLoaderException {
 
         try {
             this.keyStore = KeyStore.getInstance(this.keystoreType);
             this.keyStore.load(this.keystoreFile,this.password.toCharArray());
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            throw new KeystoreLoaderException("Keystore format exception",e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new KeystoreLoaderException("Keystore file exception",e);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new KeystoreLoaderException("Keystore Algorithm Exception",e);
         } catch (CertificateException e) {
-            e.printStackTrace();
+            throw new KeystoreLoaderException("Keystore Certificates Exception",e);
         }
 
     }

@@ -5,10 +5,11 @@ package com.brugnot.security.core.exception.crypt;
  */
 public class CryptoComponentInstantiationException extends Exception {
 
-    public CryptoComponentInstantiationException(String message) {
-        super(message);
-    }
-
+    /**
+     *
+     * @param message
+     * @param cause
+     */
     public CryptoComponentInstantiationException(String message, Throwable cause) {
         super(message, cause);
     }
