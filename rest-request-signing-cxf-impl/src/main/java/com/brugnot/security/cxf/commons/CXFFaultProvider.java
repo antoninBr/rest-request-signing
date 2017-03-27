@@ -17,10 +17,10 @@ public class CXFFaultProvider {
         Fault fault = new Fault(throwable);
         switch (faultSide) {
             case CLIENT:
-                fault.setFaultCode(new QName("Client"));
+                fault.setFaultCode(Fault.FAULT_CODE_CLIENT);
                 break;
             case SERVER:
-                fault.setFaultCode(new QName("Server"));
+                fault.setFaultCode(Fault.FAULT_CODE_SERVER);
                 break;
 
         }

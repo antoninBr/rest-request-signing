@@ -58,8 +58,7 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
      */
     public void handleMessage(Message message) throws Fault {
 
-        Map<String, List<String>> headers = (Map<String, List<String>>) message
-                .get(Message.PROTOCOL_HEADERS);
+        Map<String, List<String>> headers = getHeadersOfMessage(message);
 
         try {
 
@@ -98,6 +97,15 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
         }
     }
 
+    private Map<String, List<String>> getHeadersOfMessage(Message message) {
+        Map<String, List<String>> headers = (Map<String, List<String>>) message
+                .get(Message.PROTOCOL_HEADERS);
+
+        if(headers == null || headers.isEmpty()){
+            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new Exception("There is no headers on the incoming request"));
+        }
+        return headers;
+    }
 
     /**
      * Extract Incoming Request Rest Security Header
