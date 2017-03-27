@@ -5,6 +5,7 @@ import com.brugnot.security.core.crypt.wrapper.DecryptionWrapper;
 import com.brugnot.security.core.exception.builder.RestBuilderException;
 import com.brugnot.security.core.exception.crypt.HashedRestCanonicalRequestDecryptingException;
 import com.brugnot.security.core.exception.user.UserAuthenticationException;
+import com.brugnot.security.core.exception.user.code.UserAuthenticationErrCode;
 import com.brugnot.security.core.user.AuthenticatedUserCreator;
 import com.brugnot.security.core.user.AuthenticatedUserHolder;
 import com.brugnot.security.core.user.CandidateUserCreator;
@@ -78,7 +79,8 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
             if(decryptionWrapper.getProcessedRequest().equals(hashedLocalRequest)){
                 holder.hold(authenticatedUserCreator.createAuthenticatedUser(candidateUser));
             }else{
-                throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new UserAuthenticationException("Canonical Requests do not match each other"));
+                throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new UserAuthenticationException(
+                        UserAuthenticationErrCode.INVALID_CANONICAL_REQUEST, "Canonical Requests do not match each other"));
             }
 
         } catch (UserAuthenticationException e) {
