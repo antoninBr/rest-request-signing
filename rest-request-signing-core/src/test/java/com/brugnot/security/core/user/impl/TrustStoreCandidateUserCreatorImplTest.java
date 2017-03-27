@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class TrustStoreCandidateUserCreatorImplTest extends StoreTester{
 
-    TrustStoreCandidateUserCreatorImpl trustStoreCandidateUserCreator;
+    private TrustStoreCandidateUserCreatorImpl trustStoreCandidateUserCreator;
 
     private static final String ENCRYPTED_REQUEST_KEY = "abc";
 

@@ -14,9 +14,7 @@ import org.junit.Test;
  */
 public class KeystoreSigningUserCreatorImplTest extends StoreTester{
 
-    KeystoreSigningUserCreatorImpl signingUserCreator;
-
-
+    private KeystoreSigningUserCreatorImpl signingUserCreator;
 
     @Before
     public void setUp() throws Exception {
