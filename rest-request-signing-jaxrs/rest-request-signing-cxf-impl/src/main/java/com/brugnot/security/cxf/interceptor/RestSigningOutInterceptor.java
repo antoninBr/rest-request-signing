@@ -72,14 +72,19 @@ public final class RestSigningOutInterceptor extends AbstractCxfRestOutOperation
             headersToUpdate.put(RestSecurityHeadersEnum.REST_CANONICAL_REQUEST_HASH_ALGORITHM.getNormalizedName(), Arrays.asList(requestHashAlgorithm.getHashAlgorithm()));
 
         } catch (SigningUserCreationException e) {
+            LOGGER.error("Error while creating a signing user using the provided user and signing user creator",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (RestBuilderException e) {
+            LOGGER.error("Error building one of the rest canonical request artifacts",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (HashedRestCanonicalRequestEncryptingException e) {
+            LOGGER.error("Error while encrypting the rest canonical request",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (RequestPayloadExtractionException e) {
+            LOGGER.error("Error while extracting the outgoing request payload for the content hashing",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (RequestComponentExtractionException e) {
+            LOGGER.error("Error while extracting one of the outgoing request components (query params, headers, etc...)",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         }
 

@@ -88,21 +88,29 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
             if(decryptionWrapper.getProcessedRequest().equals(hashedLocalRequest)){
                 holder.hold(authenticatedUserCreator.createAuthenticatedUser(candidateUser));
             }else{
+                LOGGER.error("The hashed local canonical request and the received one are not equals (see debug log for more info)");
+                LOGGER.debug("Hashed Local Request : '{}' >>> Received Hashed Request (decrypted): '{}'",hashedLocalRequest,decryptionWrapper.getProcessedRequest());
                 throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new UserAuthenticationException(
                         UserAuthenticationErrCode.INVALID_CANONICAL_REQUEST, "Canonical Requests do not match each other"));
             }
 
         } catch (UserAuthenticationException e) {
+            LOGGER.error("Error while authenticating the user (check its name, extracting its public key,etc...)",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (SecurityHeadersExtractionException e) {
+            LOGGER.error("Error while extracting one of the security headers of the incoming request",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         } catch (HashedRestCanonicalRequestDecryptingException e) {
+            LOGGER.error("Error while decrypting the incoming request hashed canonical request",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RequestComponentExtractionException e) {
+            LOGGER.error("Error while decrypting the incoming request hashed canonical request",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RestBuilderException e) {
+            LOGGER.error("Error while extracting the incoming request payload for the content hashing",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RequestPayloadExtractionException e) {
+            LOGGER.error("Error while extracting one of the incoming request components (query params, headers, etc...)",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         }
 
