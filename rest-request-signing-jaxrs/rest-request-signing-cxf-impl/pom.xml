@@ -8,6 +8,7 @@
         <artifactId>rest-request-signing-aggregator</artifactId>
         <groupId>com.brugnot.security</groupId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>com.brugnot.security</groupId>
