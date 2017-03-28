@@ -25,11 +25,13 @@
 
         <module>rest-request-signing-commons</module>
         <module>rest-request-signing-core</module>
-        <module>rest-request-signing-cxf-impl</module>
+
+        <module>rest-request-signing-jaxrs</module>
 
         <module>rest-request-signing-samples</module>
 
         <module>rest-request-signing-doc</module>
+
 
     </modules>
 

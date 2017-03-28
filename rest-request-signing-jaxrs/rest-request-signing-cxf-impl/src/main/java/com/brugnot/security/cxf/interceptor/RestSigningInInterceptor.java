@@ -21,6 +21,8 @@ import com.brugnot.security.rest.commons.header.RestSecurityHeadersEnum;
 import com.brugnot.security.rest.commons.user.CandidateUser;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -52,11 +54,19 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
     private AuthenticatedUserHolder holder;
 
     /**
+     * LOGGER
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestSigningInInterceptor.class);
+
+
+    /**
      * Handle incoming Message and check the signing
      * @param message
      * @throws Fault
      */
     public void handleMessage(Message message) throws Fault {
+
+        LOGGER.info("Checking the Signing of the Incoming Rest Request");
 
         Map<String, List<String>> headers = getHeadersOfMessage(message);
 
@@ -95,6 +105,8 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
         } catch (RequestPayloadExtractionException e) {
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         }
+
+        LOGGER.info("Rest incoming request signing checked");
     }
 
     private Map<String, List<String>> getHeadersOfMessage(Message message) {
@@ -104,6 +116,9 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
         if(headers == null || headers.isEmpty()){
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, new Exception("There is no headers on the incoming request"));
         }
+
+        LOGGER.debug("Number of headers in the request : {}",headers.size());
+
         return headers;
     }
 
@@ -117,17 +132,22 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
      */
     private String extractRestSecurityHeader(Map<String, List<String>> headers, RestSecurityHeaders restSecurityHeaders) throws SecurityHeadersExtractionException {
 
+        LOGGER.debug("Extracting the Security header '{}' from the request headers list",restSecurityHeaders.getNormalizedName());
         List<String> securityHeaderValues =  headers.get(restSecurityHeaders.getNormalizedName());
 
         if (securityHeaderValues == null || securityHeaderValues.isEmpty()) {
             if(restSecurityHeaders.isMandatory()){
+                LOGGER.error("Mandatory Rest Security Header with normalized name : '{}' is missing in the request headers",restSecurityHeaders.getNormalizedName());
                 throw new SecurityHeadersExtractionException("Mandatory Rest Security Header with normalized name : '"+restSecurityHeaders.getNormalizedName()+"' is missing in the request headers");
             }else{
+                LOGGER.debug("There is no security header '{}' in the request headers list",restSecurityHeaders.getNormalizedName());
                 return null;
             }
         }else{
             //Get the first value of the list
-            return securityHeaderValues.get(0);
+            String headerValue = securityHeaderValues.get(0);
+            LOGGER.debug("Security header '{}' value : '{}'",restSecurityHeaders.getNormalizedName(),headerValue);
+            return headerValue;
         }
     }
 

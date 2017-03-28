@@ -16,6 +16,8 @@ import com.brugnot.security.rest.commons.user.User;
 import org.apache.cxf.annotations.Provider;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -43,7 +45,15 @@ public final class RestSigningOutInterceptor extends AbstractCxfRestOutOperation
      */
     private SigningUserCreator signingUserCreator;
 
+    /**
+     * LOGGER
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestSigningOutInterceptor.class);
+
+
     public void handleMessage(Message message) throws Fault {
+
+        LOGGER.info("Signing the Rest Outgoing Request");
 
         EncryptionWrapper encryptionWrapper;
         try {
@@ -72,6 +82,8 @@ public final class RestSigningOutInterceptor extends AbstractCxfRestOutOperation
         } catch (RequestComponentExtractionException e) {
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
         }
+
+        LOGGER.info("Rest outgoing request signed");
 
     }
 

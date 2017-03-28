@@ -1,5 +1,6 @@
 package com.brugnot.security.cxf.interceptor;
 
+import com.brugnot.security.rest.commons.exception.SecurityHeadersExtractionException;
 import org.apache.cxf.interceptor.Fault;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,6 +34,10 @@ public class RestSigningInInterceptorTest extends AbstractInterceptorTest{
         }catch (Fault e){
             if(!Fault.FAULT_CODE_CLIENT.equals(e.getFaultCode())){
                 Assert.fail();
+            }else{
+                if(!SecurityHeadersExtractionException.class.equals(e.getCause().getClass())){
+                    Assert.fail();
+                }
             }
         }
     }
