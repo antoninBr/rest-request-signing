@@ -142,7 +142,7 @@
                         <toc>left</toc>
                         <toclevels>5</toclevels>
                         <numbered />
-                        <revnumber>${project.version} - OpenSource</revnumber>
+                        <revnumber>${project.version} - GNU GPLv3</revnumber>
                         <author>Antonin Brugnot</author>
                         <email>antonin.brugnot@laposte.net</email>
                         <revdate>${timestamp}</revdate>
