@@ -1,0 +1,37 @@
+@startuml
+
+package "Commons"{
+[Hash]
+[Header]
+[Logging Enums]
+[Request Interfaces]
+[User Interfaces]
+}
+
+package "Core" {
+[Builders]
+[Crypt]
+[Timestamp]
+[User Impl] -up-> [User Interfaces]
+}
+
+package "JAXRS" {
+[CXF-Impl] -up-> [Builders]
+[CXF-Impl] -up-> [Crypt]
+[CXF-Impl] -up-> [Timestamp]
+[CXF-Impl] -up-> [Request Interfaces]
+[Jersey Impl]
+}
+
+package "Samples" {
+[Cxf-Client] -up-> [CXF-Impl]
+[Cxf-Server] -up-> [CXF-Impl]
+[Cxf-Client] -down-> [Samples Commons]
+[Cxf-Server] -down-> [Samples Commons]
+}
+
+package "Dependencies" {
+[Logging]
+[Tests]
+
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+Alice - (Auth + Message)
+(Auth + Message) - Mallory
+Mallory - (Auth + Message')
+(Auth + Message') - Bob
+@enduml

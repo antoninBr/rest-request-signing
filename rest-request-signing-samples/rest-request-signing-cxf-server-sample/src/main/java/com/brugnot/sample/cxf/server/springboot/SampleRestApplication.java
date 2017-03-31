@@ -102,7 +102,7 @@ public class SampleRestApplication {
         return new KeystoreLoader(
                 this.getClass()
                         .getClassLoader()
-                        .getResourceAsStream("truststore.jks"),
+                        .getResourceAsStream("users-truststore.jks"),
                 "JKS",
                 "pwd");
     }

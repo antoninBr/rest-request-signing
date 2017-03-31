@@ -1,0 +1,21 @@
+@startuml
+Alice -> RestSigningOutInterceptor : Rest Request
+RestSigningOutInterceptor -> RestSigningOutInterceptor : Create canonical request
+RestSigningOutInterceptor -> RestSigningOutInterceptor : Hash canonical request
+RestSigningOutInterceptor -> RestSigningOutInterceptor : Crypt hashed canonical request
+RestSigningOutInterceptor -> RestSigningOutInterceptor : Create Timestamp
+RestSigningOutInterceptor -> RestSigningOutInterceptor : Add security headers
+RestSigningOutInterceptor -> RestSigningInInterceptor : Rest Request + Security Headers
+
+RestSigningInInterceptor -> RestSigningInInterceptor : Extract security headers
+RestSigningInInterceptor -> RestSigningInInterceptor : Validate Timestamp
+RestSigningInInterceptor -> RestSigningInInterceptor : Find User Candidate
+RestSigningInInterceptor -> RestSigningInInterceptor : UnCrypt received hashed canonical request
+RestSigningInInterceptor -> RestSigningInInterceptor : Create local canonical request
+RestSigningInInterceptor -> RestSigningInInterceptor : compare local canonical request to received one
+alt local and received equals
+RestSigningInInterceptor -> Bob : Rest Request
+else not equals
+RestSigningInInterceptor -> Alice : Authentication Error
+end
+@enduml

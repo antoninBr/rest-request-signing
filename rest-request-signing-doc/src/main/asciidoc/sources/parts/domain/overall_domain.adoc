@@ -1,0 +1,28 @@
+== Overall ==
+
+The rest request signing architecture has a strict separation of its assets (such as crypt, hashing and canonicalization) and let you choose your favorite jaxrs implementation.
+
+.Components
+|===
+|Name |Description
+
+|Commons
+|Common Enumerations and Interfaces
+
+|Core
+|Handles crypto, canonical request building, hashing, user creation and timestamps
+
+|JAXRS
+|Handled JAXRS implementations (Interceptors)
+
+|Samples
+|Samples on handled JAXRS implementations (client and server)
+
+|Dependencies
+|DOM modules with dependency managements on Logging and Testing
+|===
+
+This components diagram shows all the previously listed components.
+
+.Architecture
+image::schemas/rest-request-signing-components.png[Architecture]

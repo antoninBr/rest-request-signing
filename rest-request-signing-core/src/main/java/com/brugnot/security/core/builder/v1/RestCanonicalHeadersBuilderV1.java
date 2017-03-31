@@ -36,13 +36,13 @@ public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements 
 
         for (String headerName : headerNames) {
 
-            canonicalHeadersBuilder.append(headerName);
+            canonicalHeadersBuilder.append(headerName.toLowerCase().trim());
 
             List<String> headerValues = headers.get(headerName);
             java.util.Collections.sort(headerValues);
 
             for(String headerValue : headerValues){
-                canonicalHeadersBuilder.append(headerValue);
+                canonicalHeadersBuilder.append(trimAll(headerValue));
             }
         }
 
@@ -51,5 +51,15 @@ public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements 
         LOGGER.debug(createItemDebugLog(DebugLogType.OUTPUT,"canonicalHeaders", LoggedItem.STRING,canonicalHeaders));
 
         return canonicalHeaders;
+    }
+
+    /**
+     * Remove all space before and after and convert spaces between in single spaces
+     * @param headerValue
+     * @return trim header value
+     */
+    private String trimAll(String headerValue) {
+        //TODO : implement this
+        return headerValue;
     }
 }

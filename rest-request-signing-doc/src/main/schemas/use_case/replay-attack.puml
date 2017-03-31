@@ -1,0 +1,6 @@
+@startuml
+Alice - (Auth + Message)
+(Auth + Message) - Bob
+(Auth + Message) .down. Eve
+Eve .down. Bob
+@enduml

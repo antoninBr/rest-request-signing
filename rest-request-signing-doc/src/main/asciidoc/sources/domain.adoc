@@ -3,6 +3,8 @@
 // Header inclusion after page title
 include::includes/_header.adoc[]
 
+
+include::parts/domain/overall_domain.adoc[]
 include::parts/domain/user_domain.adoc[]
 include::parts/domain/builders_domain.adoc[]
 

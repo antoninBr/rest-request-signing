@@ -68,7 +68,7 @@ public class SpringBootClientApplication {
         return new KeystoreLoader(
                 this.getClass()
                 .getClassLoader()
-                .getResourceAsStream("keystore.p12"),
+                .getResourceAsStream("users-keystore.p12"),
                 "PKCS12",
                 "pwd");
     }

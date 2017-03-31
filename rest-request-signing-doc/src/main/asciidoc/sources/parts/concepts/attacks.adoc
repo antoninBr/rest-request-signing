@@ -1,0 +1,28 @@
+= Blocked Attack =
+
+The basic aim of the rest request signing (outside the obvious user authentication) is to block security attacks such as *man in the middle* or *replay*.
+
+== Man-in-the-middle ==
+
+=== Description ===
+
+This is an attack where the attacker secretly relays and possibly alters the communication between two parties who believe they are directly communicating with each other.
+In a rest request context the main threat of this attack is to alter the data that is transferred (headers, payload,..) for malicious usage.
+
+image::schemas/man-in-the-middle-attack.png[Use Case]
+
+=== Solution ===
+
+The use of a hashed canonical request  insure that any alteration on the rest request will be detected (the hash would be different on the server side).
+
+== Replay ==
+
+=== Description ===
+This is an attack in which a valid data transmission is maliciously or fraudulently repeated or delayed.
+In a rest request context this attack main purpose is the intercept a request between two actors and send it after to the intended actor (even if the request as authentication).
+
+image::schemas/replay-attack.png[Use case]
+
+=== Solution ===
+
+Each of signed rest request as a timestamp which that will be validated on the server side (several validation strategies are available on configuration such as request counters, duration limits, etc..).
