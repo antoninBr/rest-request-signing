@@ -27,7 +27,7 @@ public class RestSignedHeadersBuilderV1 extends AbstractBuilderV1 implements Res
     @Profiled
     public String buildRestSignedHeaders(Set<String> signedHeaders) throws RestSignedHeadersBuildingException {
 
-        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"restRequestPayload", LoggedItem.SET,signedHeaders));
+        LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"signedHeaders", LoggedItem.SET,signedHeaders));
 
         SortedSet<String> sortedSignedHeaders = new TreeSet<String>(signedHeaders);
 

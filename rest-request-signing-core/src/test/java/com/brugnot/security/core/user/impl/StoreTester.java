@@ -1,6 +1,7 @@
 package com.brugnot.security.core.user.impl;
 
 import com.brugnot.security.core.exception.loader.KeystoreLoaderException;
+import com.brugnot.security.core.tools.KeystoreLoader;
 
 /**
  * Created by a.brugnot on 27/03/2017.

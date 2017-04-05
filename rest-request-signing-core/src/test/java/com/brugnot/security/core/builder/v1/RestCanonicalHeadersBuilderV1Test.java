@@ -27,7 +27,7 @@ public class RestCanonicalHeadersBuilderV1Test {
     }
 
     @Test
-    public void buildRestCanonicalHeadersString() throws Exception {
+    public void testBuildRestCanonicalHeadersString1() throws Exception {
 
         Map<String,List<String>> headers = new HashMap<>();
         headers.put("header1",Arrays.asList("titi","toto","tutu"));
@@ -36,6 +36,17 @@ public class RestCanonicalHeadersBuilderV1Test {
         String canonicalHeadersString = restCanonicalHeadersBuilderV1.buildRestCanonicalHeaders(headers);
 
         Assert.assertEquals("header1tititototutuheader2likeheader3roff",canonicalHeadersString);
+
+    }
+
+    @Test
+    public void testBuildRestCanonicalHeadersString2() throws Exception {
+
+        Map<String,List<String>> headers = new HashMap<>();
+        headers.put("header1",Arrays.asList("titi "," toto","tutu"));
+        String canonicalHeadersString = restCanonicalHeadersBuilderV1.buildRestCanonicalHeaders(headers);
+
+        Assert.assertEquals("header1tititototutu",canonicalHeadersString);
 
     }
 }

@@ -24,14 +24,19 @@ public class RestCanonicalURIBuilderV1 extends AbstractBuilderV1 implements Rest
     private static final Logger LOGGER = LoggerFactory.getLogger(RestCanonicalURIBuilderV1.class);
 
     @Profiled
-    public URI buildRestCanonicalURI(String URIAbsolutePath) throws RestCanonicalURIBuildingException {
+    public String buildRestCanonicalURI(String URIAbsolutePath) throws RestCanonicalURIBuildingException {
 
         LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"URIAbsolutePath", LoggedItem.STRING,URIAbsolutePath));
 
         try {
-            return new URI(URIAbsolutePath);
+            URI uri = new URI(URIAbsolutePath);
+            uri = uri.normalize();
+            String canonicalURI = uri.getPath();
+            LOGGER.debug(createItemDebugLog(DebugLogType.OUTPUT,"canonicalURI", LoggedItem.STRING,canonicalURI));
+            return canonicalURI;
         } catch (URISyntaxException e) {
-            throw new RestCanonicalURIBuildingException("",e);
+            throw new RestCanonicalURIBuildingException("Error while Building the rest canonical URI",e);
         }
+
     }
 }

@@ -55,15 +55,21 @@ public abstract class AbstractCxfRestInOperation extends
         return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
                 requestHashAlgorithm,
                 CXFRequestComponent.METHOD.getComponentAsString(message),
-                restCanonicalURIBuilder.buildRestCanonicalURI(CXFRequestComponent.REQUEST_URI.getComponentAsString(message)).toString(),
+                restCanonicalURIBuilder.buildRestCanonicalURI(CXFRequestComponent.REQUEST_URI.getComponentAsString(message)),
                 restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(CXFRequestComponent.QUERY.getComponentAsString(message)),
                 restCanonicalHeadersBuilder.buildRestCanonicalHeaders(CXFRequestComponent.HEADERS.getComponentAsMap(message)),
-                restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage()),
+                restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage(message)),
                 restRequestPayloadBuilder.buildRestRequestPayload(payloadHashAlgorithm, InPayloadDataProvider.getInContentData(message)));
     }
 
-    private Set<String> getRestSignedHeadersFromMessage() {
-        return new TreeSet<String>();
+    /**
+     *
+     * @param message
+     * @return
+     * @throws RequestComponentExtractionException
+     */
+    private Set<String> getRestSignedHeadersFromMessage(Message message) throws RequestComponentExtractionException {
+        return new TreeSet<>(CXFRequestComponent.HEADERS.getComponentAsMap(message).keySet());
     }
 
     @Inject

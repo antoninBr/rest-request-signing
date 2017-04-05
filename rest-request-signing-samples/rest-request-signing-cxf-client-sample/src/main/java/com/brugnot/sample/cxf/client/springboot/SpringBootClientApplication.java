@@ -6,7 +6,7 @@ import com.brugnot.security.core.builder.v1.*;
 import com.brugnot.security.core.crypt.HashedRestCanonicalRequestEncryptor;
 import com.brugnot.security.core.crypt.impl.RSARequestEncryption;
 import com.brugnot.security.core.user.SigningUserCreator;
-import com.brugnot.security.core.user.impl.KeystoreLoader;
+import com.brugnot.security.core.tools.KeystoreLoader;
 import com.brugnot.security.core.user.impl.KeystoreSigningUserCreatorImpl;
 import com.brugnot.security.core.user.impl.KeystoreUserImpl;
 import com.brugnot.security.cxf.interceptor.RestSigningOutInterceptor;

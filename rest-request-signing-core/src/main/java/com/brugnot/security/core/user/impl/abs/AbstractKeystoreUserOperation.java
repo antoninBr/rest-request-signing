@@ -1,6 +1,6 @@
 package com.brugnot.security.core.user.impl.abs;
 
-import com.brugnot.security.core.user.impl.KeystoreLoader;
+import com.brugnot.security.core.tools.KeystoreLoader;
 
 import javax.inject.Inject;
 

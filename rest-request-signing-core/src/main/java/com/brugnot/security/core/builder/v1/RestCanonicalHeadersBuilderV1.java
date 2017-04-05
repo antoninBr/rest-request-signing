@@ -5,6 +5,7 @@ import com.brugnot.security.core.builder.v1.abs.AbstractBuilderV1;
 import com.brugnot.security.core.exception.builder.RestCanonicalHeadersBuildingException;
 import com.brugnot.security.rest.commons.logging.DebugLogType;
 import com.brugnot.security.rest.commons.logging.LoggedItem;
+import org.apache.commons.lang3.StringUtils;
 import org.perf4j.aop.Profiled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +40,13 @@ public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements 
             canonicalHeadersBuilder.append(headerName.toLowerCase().trim());
 
             List<String> headerValues = headers.get(headerName);
+
+            headerValues.replaceAll(headerValue -> StringUtils.strip(headerValue));
+
             java.util.Collections.sort(headerValues);
 
             for(String headerValue : headerValues){
-                canonicalHeadersBuilder.append(trimAll(headerValue));
+                canonicalHeadersBuilder.append(StringUtils.strip(headerValue));
             }
         }
 
@@ -51,15 +55,5 @@ public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements 
         LOGGER.debug(createItemDebugLog(DebugLogType.OUTPUT,"canonicalHeaders", LoggedItem.STRING,canonicalHeaders));
 
         return canonicalHeaders;
-    }
-
-    /**
-     * Remove all space before and after and convert spaces between in single spaces
-     * @param headerValue
-     * @return trim header value
-     */
-    private String trimAll(String headerValue) {
-        //TODO : implement this
-        return headerValue;
     }
 }

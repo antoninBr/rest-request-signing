@@ -22,13 +22,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
  * Created by Antonin on 27/11/2016.
  */
-public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncryptor, HashedRestCanonicalRequestDecryptor{
+public class AbstractRequestEncryption extends AbstractCrypo implements HashedRestCanonicalRequestEncryptor, HashedRestCanonicalRequestDecryptor{
 
 
     /**
@@ -82,7 +81,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"requestCipherAlgorithm",LoggedItem.STRING,requestCipherAlgorithm));
             requestCipher = createCipher(requestCipherAlgorithm);
             //Create symmetrical request encryption key
-            encryptKey= generateRequestEncryptionKey("AES");
+            encryptKey= generateOneTimeUsageSymmetricEncryptionKey("AES");
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"request encrypt Key to use",LoggedItem.STRING,Arrays.toString(encryptKey.getEncoded())));
         } catch (CryptoComponentInstantiationException e) {
             throw new HashedRestCanonicalRequestEncryptingException("Error while instantiating one of the crypto components",e);
@@ -202,39 +201,7 @@ public class AbstractRequestEncryption implements HashedRestCanonicalRequestEncr
         return new DecryptionWrapper(new String(decrypted),System.currentTimeMillis()-startTime);
     }
 
-    /**
-     * Create a Cipher with the provided Algorithm
-     * @param cipherAlgorithm
-     * @return instantiated Cipher
-     * @throws CryptoComponentInstantiationException
-     */
-    private Cipher createCipher(String cipherAlgorithm) throws CryptoComponentInstantiationException {
-        try {
-            return  Cipher.getInstance(cipherAlgorithm);
-        }catch(NoSuchAlgorithmException e){
-            throw new CryptoComponentInstantiationException("Error while instantiating the request encryption components",e);
-        }catch(NoSuchPaddingException e){
-            throw new CryptoComponentInstantiationException("Error while instantiating the request encryption components",e);
-        }
 
-    }
-
-    /**
-     * Generate the Request Encryption Key
-     * @param keyAlgorithm
-     * @return symmetrical key
-     * @throws CryptoComponentInstantiationException
-     */
-    private SecretKey generateRequestEncryptionKey(String keyAlgorithm) throws CryptoComponentInstantiationException {
-
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance(keyAlgorithm);
-            return keyGen.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-            throw new CryptoComponentInstantiationException("Error while generating the request encryption key",e);
-        }
-
-    }
 
     protected String createItemDebugLog(DebugLogType debugLogType, String itemName, LoggedItem loggedItem, Object object){
 

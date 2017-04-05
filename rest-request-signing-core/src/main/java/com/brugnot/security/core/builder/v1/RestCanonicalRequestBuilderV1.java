@@ -41,14 +41,15 @@ public class RestCanonicalRequestBuilderV1 extends AbstractBuilderV1 implements 
 
         String restCanonicalRequest = buildRestCanonicalRequest(httpRequestMethod,canonicalURI,canonicalQueryString,canonicalHeaders,signedHeaders,requestPayload);
 
-        String hashedRestCanonicalRequest;
+        LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"restCanonicalRequest", LoggedItem.STRING,restCanonicalRequest));
 
         try {
-            hashedRestCanonicalRequest = getHashOfData(hashAlgorithm,restCanonicalRequest.getBytes());
+            String hashedRestCanonicalRequest = getHashOfData(hashAlgorithm,restCanonicalRequest.getBytes());
+            return hashedRestCanonicalRequest;
         } catch (HashCreationException e) {
             throw new RestCanonicalRequestBuildingException("Error while building the hashed rest canonical request",e);
         }
 
-        return hashedRestCanonicalRequest;
+
     }
 }

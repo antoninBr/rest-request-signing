@@ -56,7 +56,7 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
             return restCanonicalRequestBuilder.buildHashedRestCanonicalRequest(
                     requestHashAlgorithm,
                     CXFRequestComponent.METHOD.getComponentAsString(message),
-                    restCanonicalURIBuilder.buildRestCanonicalURI(CXFRequestComponent.REQUEST_URI.getComponentAsString(message)).toString(),
+                    restCanonicalURIBuilder.buildRestCanonicalURI(CXFRequestComponent.REQUEST_URI.getComponentAsString(message)),
                     restCanonicalQueryStringBuilder.buildRestCanonicalQueryString(CXFRequestComponent.QUERY.getComponentAsString(message)),
                     restCanonicalHeadersBuilder.buildRestCanonicalHeaders(CXFRequestComponent.HEADERS.getComponentAsMap(message)),
                     restSignedHeadersBuilder.buildRestSignedHeaders(getRestSignedHeadersFromMessage(message)),
@@ -70,8 +70,8 @@ public abstract class AbstractCxfRestOutOperation extends AbstractOutDatabinding
      * @param message
      * @return
      */
-    private Set<String> getRestSignedHeadersFromMessage(Message message) {
-        return new TreeSet<String>();
+    private Set<String> getRestSignedHeadersFromMessage(Message message) throws RequestComponentExtractionException {
+        return new TreeSet<>(CXFRequestComponent.HEADERS.getComponentAsMap(message).keySet());
     }
 
     @Inject

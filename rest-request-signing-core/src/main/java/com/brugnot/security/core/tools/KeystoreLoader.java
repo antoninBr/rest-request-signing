@@ -1,4 +1,4 @@
-package com.brugnot.security.core.user.impl;
+package com.brugnot.security.core.tools;
 
 import com.brugnot.security.core.exception.loader.KeystoreLoaderException;
 

@@ -20,5 +20,5 @@ public interface RestCanonicalURIBuilder  extends VersionedBuilder {
      * @return canonical URI (Normalized  according to RFC 3986)
      * @throws RestCanonicalURIBuildingException
      */
-    URI buildRestCanonicalURI(String URIAbsolutePath) throws RestCanonicalURIBuildingException;
+    String buildRestCanonicalURI(String URIAbsolutePath) throws RestCanonicalURIBuildingException;
 }
