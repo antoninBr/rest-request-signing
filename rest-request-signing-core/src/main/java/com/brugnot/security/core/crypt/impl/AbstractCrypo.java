@@ -22,9 +22,7 @@ public abstract class AbstractCrypo {
     protected Cipher createCipher(String cipherAlgorithm) throws CryptoComponentInstantiationException {
         try {
             return  Cipher.getInstance(cipherAlgorithm);
-        }catch(NoSuchAlgorithmException e){
-            throw new CryptoComponentInstantiationException("Error while instantiating the request encryption components",e);
-        }catch(NoSuchPaddingException e){
+        }catch(NoSuchAlgorithmException | NoSuchPaddingException e){
             throw new CryptoComponentInstantiationException("Error while instantiating the request encryption components",e);
         }
 

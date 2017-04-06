@@ -139,9 +139,7 @@ public class KeystoreRestSignatureTimestampService extends AbstractCrypo impleme
             encryptedTimestampByteArray = timestampEncryptCipher.doFinal(currentTimestampAsByteArray);
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted current Timestamp As Byte Array",LoggedItem.STRING, Arrays
                     .toString(encryptedTimestampByteArray)));
-        } catch (IllegalBlockSizeException e) {
-            throw new RestSignatureTimestampException("Error while crypt the timestamp",e);
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RestSignatureTimestampException("Error while crypt the timestamp",e);
         }
 
@@ -178,9 +176,7 @@ public class KeystoreRestSignatureTimestampService extends AbstractCrypo impleme
             timestampAsByteArray = timestampDecryptCipher.doFinal(encryptedTimestampAsByteArray);
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"current Timestamp As Byte Array",LoggedItem.STRING, Arrays
                     .toString(timestampAsByteArray)));
-        } catch (IllegalBlockSizeException e) {
-            throw new RestSignatureTimestampException("Error while crypt the timestamp",e);
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RestSignatureTimestampException("Error while crypt the timestamp",e);
         }
 

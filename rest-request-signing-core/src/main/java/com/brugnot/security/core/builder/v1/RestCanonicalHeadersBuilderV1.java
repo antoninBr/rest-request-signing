@@ -33,7 +33,7 @@ public class RestCanonicalHeadersBuilderV1 extends AbstractBuilderV1 implements 
 
         StringBuilder canonicalHeadersBuilder = new StringBuilder();
 
-        SortedSet<String> headerNames = new TreeSet<String>(headers.keySet());
+        SortedSet<String> headerNames = new TreeSet<>(headers.keySet());
 
         for (String headerName : headerNames) {
 

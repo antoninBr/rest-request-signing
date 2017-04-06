@@ -100,10 +100,7 @@ public final class RestSigningInInterceptor extends AbstractCxfRestInOperation{
         } catch (SecurityHeadersExtractionException e) {
             LOGGER.error("Error while extracting one of the security headers of the incoming request",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.CLIENT, e);
-        } catch (HashedRestCanonicalRequestDecryptingException e) {
-            LOGGER.error("Error while decrypting the incoming request hashed canonical request",e);
-            throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
-        } catch (RequestComponentExtractionException e) {
+        } catch (HashedRestCanonicalRequestDecryptingException | RequestComponentExtractionException e) {
             LOGGER.error("Error while decrypting the incoming request hashed canonical request",e);
             throw new CXFFaultProvider().createFault(CXFFaultProvider.FaultSide.SERVER, e);
         } catch (RestBuilderException e) {

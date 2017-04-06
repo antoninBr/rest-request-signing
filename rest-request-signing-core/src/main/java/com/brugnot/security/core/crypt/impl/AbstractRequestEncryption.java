@@ -110,9 +110,7 @@ public class AbstractRequestEncryption extends AbstractCrypo implements HashedRe
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(hashedRequestAsByteArray)));
             encryptedHashedRequest = requestCipher.doFinal(hashedRequestAsByteArray);
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(encryptedHashedRequest)));
-        } catch (IllegalBlockSizeException e) {
-            throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the hashedRestCanonicalRequest",e);
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the hashedRestCanonicalRequest",e);
         }
 
@@ -121,9 +119,7 @@ public class AbstractRequestEncryption extends AbstractCrypo implements HashedRe
         try {
             encryptedKey = encryptKeyCipher.doFinal(encryptKey.getEncoded());
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted encrypt key As Byte Array",LoggedItem.STRING, Arrays.toString(encryptedKey)));
-        } catch (IllegalBlockSizeException e) {
-            throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the key",e);
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new HashedRestCanonicalRequestEncryptingException("Error while encrypting the key",e);
         }
 
@@ -167,9 +163,7 @@ public class AbstractRequestEncryption extends AbstractCrypo implements HashedRe
         try {
             decryptedKey = encryptKeyCipher.doFinal(Base64.decodeBase64(user.getEncryptedRequestKey()));
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear encrypt key As Byte Array",LoggedItem.STRING, Arrays.toString(decryptedKey)));
-        } catch (IllegalBlockSizeException e) {
-            throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the Key",e);
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the Key",e);
         }
 
@@ -192,9 +186,7 @@ public class AbstractRequestEncryption extends AbstractCrypo implements HashedRe
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"encrypted Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(cryptHashedRestCanonicalRequestAsByteArray)));
             decrypted = requestCipher.doFinal(cryptHashedRestCanonicalRequestAsByteArray);
             LOGGER.debug(createItemDebugLog(DebugLogType.PROCESSING,"clear Hashed Request As Byte Array",LoggedItem.STRING, Arrays.toString(decrypted)));
-        } catch (IllegalBlockSizeException e) {
-            throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the encrypted hashedRestCanonicalRequest",e);
-        } catch (BadPaddingException e) {
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new HashedRestCanonicalRequestDecryptingException("Error while decrypting the encrypted hashedRestCanonicalRequest",e);
         }
 

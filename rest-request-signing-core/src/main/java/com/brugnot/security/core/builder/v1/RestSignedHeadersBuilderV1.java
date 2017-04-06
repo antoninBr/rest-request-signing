@@ -29,7 +29,7 @@ public class RestSignedHeadersBuilderV1 extends AbstractBuilderV1 implements Res
 
         LOGGER.debug(createItemDebugLog(DebugLogType.INPUT_ARGUMENT,"signedHeaders", LoggedItem.SET,signedHeaders));
 
-        SortedSet<String> sortedSignedHeaders = new TreeSet<String>(signedHeaders);
+        SortedSet<String> sortedSignedHeaders = new TreeSet<>(signedHeaders);
 
         StringBuilder canonicalSignedHeadersBuilder = new StringBuilder();
 
