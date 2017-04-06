@@ -22,6 +22,11 @@ import java.util.Date;
  */
 public class KeystoreRestSignatureTimestampService extends AbstractCrypo implements RestSignatureTimestampService {
 
+    /**
+     * DateFormat to Use for timestamp
+     */
+    private final static SimpleDateFormat timestampDataFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
+
     private KeystoreLoader keystoreLoader;
 
     private String keyAlias;
@@ -58,11 +63,6 @@ public class KeystoreRestSignatureTimestampService extends AbstractCrypo impleme
             throw new RestSignatureTimestampException("",e);
         }
     }
-
-    /**
-     * DateFormat to Use for timestamp
-     */
-    private final static SimpleDateFormat timestampDataFormat = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss.SSS");
 
     /**
      * Get a normalizedCurrentDate
